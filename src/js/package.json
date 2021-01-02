@@ -1,8 +1,8 @@
 {
-  "name": "next-js-boilerplate",
+  "name": "residency-catabase",
   "version": "0.1.0",
-  "author": "Yannick Wittwer",
-  "license": "MIT",
+  "author": "Vojtech Machacek",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
