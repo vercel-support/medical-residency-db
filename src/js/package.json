@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "export" : "next export",
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:scss": "stylelint 'app/**/*.scss' --syntax scss --fix ; exit 0",
     "lint:js": "eslint . --ext .tsx",
