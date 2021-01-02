@@ -1,5 +1,5 @@
 [build]
   base = "src"
-  publish = "src/out"
+  publish = "out"
   command = "npm run build && npm run export"
   
