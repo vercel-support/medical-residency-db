@@ -1,8 +1,8 @@
 {
-  "name": "next-js-boilerplate",
+  "name": "residency-database",
   "version": "0.1.0",
-  "author": "Yannick Wittwer",
-  "license": "MIT",
+  "author": "Vojtech Machacek",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,9 +13,7 @@
     "lint:js": "eslint . --ext .tsx",
     "test:unit": "jest --passWithNoTests",
     "test:unit:update": "jest --passWithNoTests --updateSnapshot",
-    "type:check": "tsc",
-    "cypress": "cypress",
-    "cypress:open": "cypress open"
+    "type:check": "tsc"
   },
   "dependencies": {
     "next": "10.0.0",
@@ -35,13 +33,10 @@
     "@typescript-eslint/parser": "^4.6.0",
     "axios": "^0.21.0",
     "babel-jest": "^26.6.1",
-    "cypress": "^5.5.0",
     "eslint": "^7.12.1",
     "eslint-plugin-react": "^7.21.5",
     "husky": "^4.3.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^26.6.1",
-    "jest-dom": "^4.0.0",
     "lint-staged": "^10.5.0",
     "prettier": "2.1.2",
     "stylelint": "^13.7.2",
