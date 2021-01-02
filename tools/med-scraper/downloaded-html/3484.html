@@ -1,0 +1,2701 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Residency Explorer&trade; Tool: Program  </title>
+    <link rel="icon"
+          type="image/gif"
+          src="~/images/favico.gif">
+
+    <link href="/telerik.2020.1.406/styles/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
+    <link href="/telerik.2020.1.406/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="/telerik.2020.1.406/styles/kendo.material.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="/telerik.2020.1.406/js/jquery.min.js"></script>
+
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+
+    <script src="/telerik.2020.1.406/js/jszip.min.js"></script>
+    <script src="/telerik.2020.1.406/js/kendo.all.min.js"></script>
+    <script src="/telerik.2020.1.406/js/kendo.aspnetmvc.min.js"></script>
+
+    <link href="/Content/jquery.rateit/rateit.css" rel="stylesheet" type="text/css">
+    <script src="/Content/jquery.rateit/jquery.rateit.js"></script>
+
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/fontawesome-all.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <link href="/css/print.css" rel="stylesheet" type="text/css" media="print" />
+
+        <!-- Google Tag Manager -->
+        <script>
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || []; w[l].push({
+                    'gtm.start':
+                        new Date().getTime(), event: 'gtm.js'
+                }); var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-NWZZ2SB');</script>
+        <!-- End Google Tag Manager -->
+
+</head>
+
+<body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWZZ2SB"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    <a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up"></i></a>
+    <script>
+        // ===== Scroll to Top ====
+        $(window).scroll(function () {
+            if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+                $('#return-to-top').fadeIn(200);    // Fade in the arrow
+            } else {
+                $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+            }
+        });
+        $('#return-to-top').click(function () {      // When arrow is clicked
+            $('body,html').animate({
+                scrollTop: 0                       // Scroll to top of body
+            }, 500);
+        });
+
+    </script>
+
+
+
+    
+
+<!-- Modal -->
+<div id="modalFeedback" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Share Your Feedback</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please share your feedback about your experiences using the features on this page.  You can share what is working for you, what is not working for you, or offer recommendations on how this page could be changed to serve you better.</p>
+                <form id="frmFeedback">
+                    <textarea id="feedback" class="form-control" rows="20" style="width: 100%; height: 100%"></textarea>
+                </form>
+                <div id="frmFeedbackLoader" style="display:none;">
+                    <div class="text-center">
+                        <h3>We are sending your feedback. Please wait.</h3>
+                        <img src="/images/loader.gif" alt="feedback is being sent" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSubmitFeedback" type="button" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="feedback-confirmation-modal" class="modal fade">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Feedback Confirmation
+                </h4>
+            </div><!-- /.modal-title -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            Thank you for your feedback. It has been sent to our support team.
+                        </p>
+                    </div>
+                </div>
+            </div><!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div><!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on("click", "#btn-feedback-open", function (e) {
+            e.preventDefault();
+            $("#modalFeedback").modal("show");
+        });
+
+        $('#btnSubmitFeedback').click(function () {
+
+            let tag = {
+                "Feedback": $('#feedback').val(), "PageName": window.location.href
+            };
+
+            $("#modalFeedback .modal-body #frmFeedback").hide();
+            $("#modalFeedback .modal-body #frmFeedbackLoader").show();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/api/UserFeedbackApi",
+                dataType: "json",
+                data: JSON.stringify(tag),
+                success: function (response) {
+                    // hide feedback form modal
+                    $("#modalFeedback").modal("hide");
+                    $("#modalFeedback .modal-body #frmFeedback").show();
+                    $("#modalFeedback .modal-body #frmFeedbackLoader").hide();
+                    // show feedback confirm modal
+                    $("#feedback-confirmation-modal").modal("show");
+                    $('#feedback').val("");
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        });
+    });
+</script>
+    <div id="about-modal" class="modal fade">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    About Residency Explorer<sup>TM</sup>
+                </h4>
+            </div><!-- /.modal-header -->
+            <div class="modal-body">
+                <p>
+                    Residency Explorer helps medical students and applicants to U.S. residency programs research programs in their specialty of interest and compare themselves to previous matched applicants at those programs.
+                </p>
+                <p>
+                    Residency Explorer is the only resource with original, source-verified data from the reputable organizations involved in the transition to residency.
+                </p>
+                <p>
+                    Residency Explorer delivers insights and information based on:<br />
+                    <ul>
+                        <li>Residency applicant data from AAMC (ERAS)</li>
+                        <li>Matched applicant data from NRMP</li>
+                        <li>USMLE data from the USMLE Program</li>
+                        <li>COMLEX-USA data from the NBOME</li>
+                        <li>Residency program directory information from ACGME</li>
+                        <li>Program characteristics from the National GME Census Survey, jointly administered by the AAMC and AMA, to which 95% of residency programs self-report information about their programs.</li>
+
+                    </ul>
+                </p>
+
+                <h2>Purpose</h2>
+                <p>
+                    The purpose of Residency Explorer is to help residency applicants understand how they compare to applicants who previously matched at programs as well as explore program characteristics across many areas of interest.
+
+                </p>
+
+
+                <h2>Disclaimer</h2>
+                <p>
+                    Residency Explorer does not tell you where to apply or predict where you may match to a residency program. It is intended to help you explore and research programs and develop a list of programs for further investigation. We encourage you to consult with a trusted advisor or mentor in the residency application process.
+                </p>
+                <p>
+                    Residency Explorer uses the most recent data available from the reputable organizations involved in the transition to residency. We encourage you to also seek out program information directly from the program’s website.
+                </p>
+                <h2>Feedback</h2>
+                <p>
+                    We are always seeking your input and feedback on future iterations of Residency Explorer. Please share your thoughts about the features and data you see – or don’t see – in the tool. Share your feedback in the feedback section in the header of the site.
+
+                </p>
+            </div>    
+
+                <div class="modal-footer" style="padding: 0;">
+
+
+                    <div class="partner-logos" style="margin-top:0; padding: 2em;">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <img src="/images/AAMC-Logo-RGB.jpg">
+                            </div>
+                            <div class="col-sm-4">
+                                <img src="/images/aacom-stacked-logo_screenedk-R.jpg">
+                            </div>
+                            <div class="col-sm-5">
+                                <img src="/images/ACGME_Logo_Horizontal_R_redblack_rgb.jpg">
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <img src="/images/AMA.jpg">
+                            </div>
+                            <div class="col-sm-4">
+                                <img src="/images/ECFMG---Scala---Stack.jpg">
+                            </div>
+                            <div class="col-sm-5">
+                                <img src="/images/fsmb-logo-horizontal.jpg">
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 30px; margin-bottom: 0;">
+
+                            <div class="col-sm-4">
+                                <img src="/images/TheMatchNRMP_Logo_PMS301.jpg">
+                            </div>
+                            <div class="col-sm-4">
+                                <img src="/images/NBME-logo_SM_large.png" style="margin-top: -15px;">
+                            </div>
+                            <div class="col-sm-4">
+                                <img src="/images/NBOME-MASTER-LOGO-NEW.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                        <div style="border-top: 1px solid #eaeaea; padding: 1em;"><button type="submit" class="btn btn-primary" data-dismiss="modal">Close</button></div>
+                </div><!-- /.modal-footer -->
+        </div><!-- /.modal-body -->
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+
+<script>
+    $(document).on("click", "#btn-about-open", function(e) {
+        e.preventDefault();
+        $("#about-modal").modal("show");
+    });    
+</script>
+
+    <div id="faq-modal" class="modal fade">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Residency Explorer<sup>TM</sup> Tool FAQs
+                </h4>
+            </div><!-- /.modal-header -->
+            <div class="modal-body">
+                        <ol>
+                            <li>
+                                <p>
+                                    <strong>Who do I contact if I have questions about using Residency Explorer?</strong><br />
+                                    For assistance using Residency Explorer, you can click on 'Help' in the upper right corner and click on the Contact Form link. Complete the form and our support team will respond to your inquiry within 1 business day.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>As a program staff member, how can I update my program's data in Residency Explorer?</strong><br />
+                                    To submit a request to update program data displayed in Residency Explorer, click on 'Help' in the upper right corner and click Contact Support. Complete the form and be sure to select “Data Discrepancy/Data Update Request” as the reason for contacting us.  Our support team will respond to your request within 2 business days.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>How often is program data updated in Residency Explorer?</strong><br />
+                                    Residency Explorer displays the most recent data available from collaborating organizations and sources, including AAMC, NRMP, ACGME, NBME/FSMB, NBOME, and the National GME Census Survey. Data updates from ACGME, ERAS and the National GME Census Survey were updated on August 16, 2020 with data collected through July 17, 2020. An additional data refresh of data from the National GME Census Survey will occur at the beginning of September with data collected through August 31, 2020. If you are a program user and have questions about your program’s data displayed in Residency Explorer, click on ‘Help’ and use the Contact Form for assistance.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>How can I provide feedback about my experience with Residency Explorer?</strong><br />
+                                    All users of Residency Explorer are encouraged to provide feedback about their experience and use of Residency Explorer by clicking on the 'Feedback' link in the top navigation bar and typing in feedback details. This information will be collected and shared with the product team.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>How should I use the data in Residency Explorer?</strong><br />
+                                    Residency Explorer does not advise you where to apply or predict where you may match to a residency program. It is intended to help you develop a list of programs for further investigation. Refer to programs' websites for detailed information about educational aims, unique features, patient populations, positions on diversity and inclusion, and other important attributes. We encourage you to consult with a trusted advisor or mentor as you research programs.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>Why have these organizations collaborated to create this tool?</strong><br />
+                                    The AAMC, AACOM, ACGME, AMA, ECFMG, FSMB, NBME, NBOME, and NRMP embrace the belief that our shared constituents—students, advisors, deans, program directors, and others—will benefit if we work together to develop a single resource that helps students understand historical outcomes, assess their candidacy, and make informed decisions.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>How many specialties can I explore at one time?</strong><br />
+                                    You will be able to explore 1 out of 23 specialties at a time. You can select a different specialty to explore by clicking on the specialty name located at the top of the page.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>How many times can I input my USMLE or COMLEX-USA scores?</strong><br />
+                                    You will be limited to 3 entries of your scores for USMLE Step 1 and Step 2CK or COMLEX-USA Level 1 and Level 2-CE. This entry limit will be applied across all specialties not per specialty. You will see a countdown indicating how many entries you have left.  <strong>You will not be able to delete or reset the number of entries. Once you have reached the maximum of three entries, you cannot enter more.</strong>
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>Do I enter a failed USMLE or COMLEX-USA score?</strong><br />
+                                    You may enter up to three scores for USMLE Step 1 and for Step 2 CK and three scores for COMLEX-USA Level 1 and for Level 2-CE in Residency Explorer. If you choose to add a failed score, it will be counted toward your total of 3 entries. <strong>You will not be able to delete or reset the number of entries. Once you have reached the maximum of three entries, you cannot enter more.</strong>
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>Is Residency Explorer mobile compatible?</strong><br />
+                                    Residency Explorer is designed primarily for a desktop or laptop. There may be elements of Residency Explorer that are compatible within a phone or tablet environment, but it is not currently designed for a mobile environment.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>
+                                    <strong>I don't see comparative data to applicants who've previously matched to a program. Why is that?</strong><br />
+                                    Residency Explorer uses historical data on matched applicants in the NRMP Main Residency Match. To protect privacy and confidentiality, there needs to be at least 10 matched applicants at a program to offer comparative data. Residency Explorer does not display comparative data for some programs with a small number of residents in order to protect the privacy of those residents. Also, many programs that have achieved ACGME accreditation in the last three years under single accreditation do not have enough historical data in the NRMP Main Residency Match to display comparative data. For these programs, the data available in Residency Explorer will improve over time. For all programs, we encourage you to consult with the program's website for additional information on program characteristics, application requirements, and resident information.
+                                </p>
+                            </li>
+                        </ol>
+            </div><!-- /.modal-body -->
+            
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div><!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    $(document).on("click", "#btn-faq-open", function(e) {
+        e.preventDefault();
+        $("#faq-modal").modal("show");
+    });    
+</script>
+
+    
+<div id="help-modal" class="modal fade">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Help
+                </h4>
+            </div><!-- /.modal-header -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            If you have questions about your experience or require support while using Residency Explorer, please click the “Contact Support” button below to be directed to the support contact form. Our support team will respond to your inquiry within 24-48 business hours.
+                        </p>
+                        <p>
+                            Residency Explorer support hours are 9:00 am – 5:00 pm ET, Monday – Friday (excluding U.S. federal holidays).
+                        </p>
+                        <!--<p>
+                            If you have forgotten your username or password, please click on the "Forgot your username/password" link on the Login webpage and follow the prompts.
+                        </p>-->
+                    </div>
+                    <div class="col-md-12">
+                        <a class="btn btn-default" href="https://students-residents.aamc.org/contact-residencyexplorer" target="_blank">Contact Support</a>
+                    </div>
+                </div>
+            </div><!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div><!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    $(document).on("click", "#btn-help-open", function(e) {
+        e.preventDefault();
+        $("#help-modal").modal("show");
+    });
+</script>
+
+
+    
+
+    <div style="margin-bottom: 0;">
+        <div class="container" id="containerSiteHeader">
+
+        </div>
+    </div>
+    <form method="post" id="logoutForm" action="/Account/Logout">
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Residency Explorer&trade; Tool</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse pull-right">
+                    <ul class="nav navbar-nav">
+                        <li><a id="btn-feedback-open" class="btn">Feedback</a></li>
+                        <li><a id="btn-about-open">About</a></li>
+                        <li><a id="btn-faq-open">FAQ</a></li>
+                        <li><a id="btn-help-open">Help</a></li>
+                        <li> <a href="#" onclick="javascript:document.getElementById('logoutForm').submit()" title="Logout">Logout</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8FcDk4ZS5CBJjrw-hnxIpjcJz7Rpt1eu5WoQFYGIoMmkMqBws8JdKXxkZJ4_9IRW5OeMglhlRNDJE-hsLGCJgXU6N1U28vOb3QpAmBmcoQ6R-4ED4Ddz1MF4svzGCUI3l38u-W71UIv73DliHAfiitW3X7psQ8hF9v1INb_cycWngtWM5T4TFw5jKieanwpGzw" /></form>
+
+
+    <!-- Begin page content -->
+    <div class="container" style="padding-top: 0;">
+        
+
+
+
+        <div class="row user-info">
+            <div class="col-md-4">
+                <ul class="nav nav-pills noprint" id="mainNav">
+                    <li id="home" role="presentation" class="active"><a href="/Home/Dashboard">Home</a></li>
+                    <li id="myprofile" role="presentation"><a href="/Profile/Update">My Profile</a></li>
+                    <li id="explore" role="presentation"><a href="/Explore">Explore</a></li>
+                    <li id="mycompare" role="presentation"><a class="true-last" CheckForUserPrograms="true" href="#">Compare</a></li>
+                </ul>
+                    </div>
+
+            <div class="col-md-8">
+                <div class="text-right">
+                    
+
+
+
+<strong>
+    <span class="fa fa-question-circle" id="pickMedicalSpecialty"></span>
+    Currently Exploring:
+    <span class="noprint"><a href="/Home/PickMedicalSpecialty">Transitional Year</a></span>
+    <span class="printOnly-inline">Transitional Year</span>
+
+    <script>kendo.syncReady(function(){jQuery("#pickMedicalSpecialty").kendoTooltip({"width":350,"position":"top","content":kendo.template(jQuery('#pickMedicalSpecialtyTemplate').html())});});</script>
+    <script id="pickMedicalSpecialtyTemplate" type="text/x-kendo-template">
+        <p>
+            Click on the specialty name to change the specialty you are currently exploring.
+
+        </p>
+    </script>
+</strong>
+
+
+                </div>
+            </div>
+        </div>
+        <script>
+    $(document).ready(function () {
+        var url = window.location.href;
+        if (url.indexOf("Home") != -1) {
+            $("#home").addClass("active");
+            $("#myprofile").removeClass("active");
+            $("#explore").removeClass("active");
+            $("#mycompare").removeClass("active");
+        }
+        else if (url.indexOf("Profile") != -1) {
+            $("#myprofile").addClass("active");
+            $("#home").removeClass("active");
+            $("#explore").removeClass("active");
+            $("#mycompare").removeClass("active");
+        }
+        else if (url.indexOf("Explore") != -1) {
+            $("#explore").addClass("active");
+            $("#home").removeClass("active");
+            $("#myprofile").removeClass("active");
+            $("#mycompare").removeClass("active");
+        }
+        else if (url.indexOf("Comparison") != -1) {
+            $("#mycompare").addClass("active");
+            $("#home").removeClass("active");
+            $("#myprofile").removeClass("active");
+            $("#explore").removeClass("active");
+        }
+
+        $("#btn-back").click(function () {
+            //history.back();
+            window.location.href = '/Explore'; 
+        })
+
+        $("#btnPrintAll").click(function (e) {
+            window.print();
+        })
+
+        //})
+
+    });
+        </script>
+        <script>
+    $(document).ready(function () {
+
+        $("[CheckForUserPrograms=\"true\"]").click(function () {
+            $.ajax({
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                url: "/api/UserProgramApi",
+                dataType: "json",
+                //data: {"userid": "869b7516-bdf6-48bf-a03b-d81c25e930fb" },
+                data: {},
+                success: function (response) {
+                    if (response === true) {
+                        window.location.href = "/Comparison";
+                    } else {
+                        $("#no-user-programs-modal").modal("show");
+                    }
+                },
+                error: function (jxhr, msg, err) {
+                    alert('error');
+                }
+            });
+        });
+    });
+</script>
+<div id="no-user-programs-modal" class="modal fade">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    My Comparison
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                </h4> <!-- /.modal-title -->
+            </div><!-- /.modal-header -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>At least two programs need to be selected for comparison through the Explore page.</p>
+                    </div>
+                </div>
+            </div><!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div><!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+        <div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Your PDF is being generated...
+                        </h4>
+                    </div>
+                    <div id="printModalBody" class="modal-body">
+                        Waiting....
+                    </div>
+                    <div class="modal-body"><img class="center-block" src="/images/loader.gif" /></div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+<style>
+    .overlayPDF {
+        background: #ffffff;
+        color: #666666;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        z-index: 5000;
+        top: 0;
+        left: 0;
+        float: left;
+        text-align: center;
+        padding-top: 25%;
+        opacity: 0.85;
+    }
+</style>
+
+
+<script>
+    var charts = new Array();
+    var numOfCharts = 21;
+    var naCount = 0;
+    var totalChartCount = 0;
+
+    var interval = null;
+
+    $(document).ready(function () {
+        supportedBrowser(); // Browser detect
+        interval = setInterval(canEnableButton, 100); // Enabling print button, will check periodically until conditions are met, since some charts take a while to load
+    });
+
+    // Enabling the print button after all charts are loaded
+    function canEnableButton() {
+        naCount = $('.na').length; // all containers that show "Data not available" instead of chart 
+        totalChartCount = charts.length; // charts.length is the final number of charts actually loaded
+
+        if (naCount + totalChartCount === numOfCharts) {
+            var element = document.getElementById("export-pdf");
+            element.classList.remove("disabled");
+            clearInterval(interval);
+        }
+        // For debugging purposes, incase more charts are added to the page
+        //else {
+        //    console.log('charts did not load');
+        //    console.log('naCount : ' + naCount);
+        //    console.log('totalChartCount : ' + totalChartCount);
+        //}
+    }
+
+    function onDataBound(e) {
+        var id = $(e.sender.element).attr("id");
+        if (charts[id] === undefined) {
+            // if statement will capture all charts that did not have the supportedbrowser() script adding the display=none property
+            if ($(id).parent().css('display') !== 'none') {
+                charts.push({ key: id, isCompleted: true });
+                console.log('chart loaded : ' + id)
+            }
+            // For debugging purposes, incase more charts are added to the page
+            //else {
+            //    console.log('charts not loaded' + id)
+            //}
+        }
+    }
+    
+    // Browser detect: Checks if user is viewing in Safari or Others (chrome, firefox, ie, etc) then hides the chart containers that has the opposite class
+    var isSafari = (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1);
+    // chrome has "safari" in user agent name, so this will remove it if also has "chrome"
+
+    function safariChart() {
+        $('.browser-other').each(function () {
+            $(this).css("display", "none"); // hide all containers meant for Other browsers
+        });
+    }
+    function regularChart() {
+        $('.browser-safari').each(function () {
+            $(this).css("display", "none"); // hide all containers meant for Safari
+        });
+    }
+    // function that is being called in the (document).ready
+    function supportedBrowser() {
+        if (isSafari) {
+            safariChart();
+        }
+        else {
+            regularChart();
+        }
+    } 
+</script>
+
+<div id="overlay">
+    <img src="/images/loader.gif" alt="Loading" /><br />
+    Program profile is being generated...
+</div>
+<div class="overlayPDF" style="display:none;">
+    <img src="/images/loader.gif" alt="Loading" /><br />
+    Program profile PDF is being generated...
+</div>
+<script>
+    jQuery(window).load(function () {
+        jQuery("#overlay").fadeOut();
+    });
+</script>
+
+<form data-ajax="true" id="ajaxForm" data-ajax-method="GET" action="/Program/GetById" method="post">
+    <input name="id" type="hidden" value="" />
+<input name="__RequestVerificationToken" type="hidden" value="CfDJ8FcDk4ZS5CBJjrw-hnxIpjcJz7Rpt1eu5WoQFYGIoMmkMqBws8JdKXxkZJ4_9IRW5OeMglhlRNDJE-hsLGCJgXU6N1U28vOb3QpAmBmcoQ6R-4ED4Ddz1MF4svzGCUI3l38u-W71UIv73DliHAfiitW3X7psQ8hF9v1INb_cycWngtWM5T4TFw5jKieanwpGzw" /></form>
+
+    <input id="id" type="hidden" value="3484" />
+    <!-- Kendo Chart PDF -->
+    <script type="x/kendo-template" id="page-template">
+        <div class="page-template">
+            <div class="header">
+                <h1>Residency Explorer&trade; Tool</h1>
+            </div>
+            <div class="footer">
+                The Residency Explorer tool is based on data provided by the Association of American Medical Colleges, Accreditation Council for Graduate Medical Education, National Board of Medical Examiners/Federation of State Medical Boards, National Board of Osteopathic Medical Examiners, and National Resident Matching Program
+                <br/><br/>
+                2019 AAMC | 655 K Street, NW, Suite 100, Washington, DC, 20001-2399
+                Page #:pageNum# of #:totalPages#
+            </div>
+        </div>
+    </script>
+    <style>
+        /*
+            Make sure everything in the page template is absolutely positioned.
+            All positions are relative to the page container.
+        */
+       
+
+    </style>
+    <div class="demo-section k-content export-app wide hidden-on-narrow">
+        <div class="demo-section content-wrapper wide">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right" id="printButtonNav">
+                        <div id="programGridBtnRow">
+                            <button type="button" class="btn btn-default" id="btn-back">Back</button>
+                            <button type="button" class="btn btn-default disabled" id="export-pdf">Print</button>
+                        </div>
+                    </div>
+
+                    <h1 class="program-detail-name" style="margin:0;">Rush University Medical Center Program</h1>
+                    <hr style="margin-top: 10px;"/>
+                    <h3 style="margin:0;">Rush University Medical Center <span class="fas fa-question-circle" id="contactDetails" style="color: #000000; float: right;"></span></h3>
+                </div>
+            </div>
+
+            <script>kendo.syncReady(function(){jQuery("#contactDetails").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#contactDetailsContentTemplate').html())});});</script>
+            <script id="contactDetailsContentTemplate" type="text/x-kendo-template">
+                <p>
+                    Data in this section were reported by programs in the ACGME Accreditation Data System (ADS).
+                </p>
+            </script>
+
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Phone:</label>
+                            <span>(312) 563-3000</span>
+                </div>
+                <div class="col-md-6">
+                    <label>Website:</label>
+                            <span class="noprint"><a href="https://tinyurl.com/y4svzafr" target="_blank">https://tinyurl.com/y4svzafr</a><br /></span>
+                            <span class="printOnly-inline">https://tinyurl.com/y4svzafr<br /></span>
+                </div>
+
+                <div class="col-md-3 noprint pull-right text-center">
+                    <div class="border-box">
+                        <label class="checkbox-inline">
+                            <input id="MyCompare_3484" type="checkbox" class="myCompare" />
+                            Compare Program
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Address:</label>
+                        <span>1725 W Harrison Street</span><br />
+                                            <span>POB II</span><br />
+                                            <span>Suite 425</span><br/>
+                                            <span>Chicago, IL 60612</span>
+
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <a href="mailto:Amir_Dorafshar@rush.edu">Amir_Dorafshar@rush.edu</a>
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+                        <label>Region:</label>
+                        <span> Central</span>
+
+                </div>
+
+                <div class="col-md-3">
+                    <label>ACGME Program Code:</label>
+                    <span>3621600148</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Program Director:</label>
+                            <span>Amir Dorafshar</span>
+
+                </div>
+
+                <div class="col-md-3">
+                    <label>Program Coordinator:</label>
+                            <span>Danielle Hill</span>
+                </div>
+
+                <div class="col-md-3">
+                    <label>Program Coordinator Phone:</label>
+                    (312) 942-6510
+                </div>
+
+                <div class="col-md-3">
+                    <label>Program Coordinator Email:</label>
+                    <a href="mailto:"></a>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <span class="fa fa-info-circle" style="display: inline-block;vertical-align: top;margin-top: 2px;font-size: 18px;"></span> <p style="display: inline-block;width: 97%;margin-left: 5px;"> Dashes ("-") indicate data for a particular field are not provided for this program in Residency Explorer. Reasons why data are not being provided can vary (e.g., they are not reported or available, they are not applicable, or they are based on an insufficient number of people for reporting purposes).</p>
+            </div>
+
+            <div class="panel-group" role="tablist">
+                
+<div class="panel panel-default printPageBreak">
+    <div class="panel-heading" role="tab" id="headingQuickFacts" data-toggle="collapse" data-parent="#accordion" href="#collapseQuickFacts" aria-expanded="true" aria-controls="collapseQuickFacts">
+        <div class="panel-title">
+            <a id="toggle-link">
+                <div class="row">
+                    <div class="col-sm-10"><h2>Program Quick Facts</h2></div>
+                    <div class="col-sm-2"><div class="text-right"> <span class="fas fa-caret-down pull-right"></span> <span class="fas fa-question-circle" id="quickFactsInfo"></span></div></div>
+                </div>
+            </a>
+        </div>
+
+        <script>kendo.syncReady(function(){jQuery("#quickFactsInfo").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#quickFactsContentTemplate').html())});});</script>
+        <script id="quickFactsContentTemplate" type="text/x-kendo-template">
+            <p>
+               Data in this section were reported by residency programs in the most recent National GME Census Survey, ACGME and in the 2020 NRMP Match Outcomes.
+            </p>
+        </script>
+
+    </div>
+    <div id="collapseQuickFacts" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingQuickFacts">
+        <div class="panel-body">
+
+            <!-- NEW LAYOUT -->
+            <div class="row">
+                <div class="col-md-4">
+                    <h3># of Filled Resident Positions, by Year*</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-left">
+                            <thead>
+                                <tr class="active">
+                                    <th>
+                                        Program Year
+                                    </th>
+                                    <th>
+                                        #
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <th>Total</th>
+                                        <td>2</td>
+                                </tr>
+                                <tr>
+                                    <th>PGY1</th>
+                                        <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th>PGY2</th>
+                                        <td>1</td>
+                                </tr>
+                                <tr>
+                                    <th>PGY3</th>
+                                        <td>1</td>
+                                </tr>
+                                </tbody>
+                        </table>
+                        <p class="text-muted">*Totals may vary from year to year due to off-cycle residents.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <h3>Program Characteristics</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-left">
+                            <thead>
+                                <tr class="active">
+                                    <th>
+                                        Characteristics
+                                    </th>
+                                    <th>
+                                        &nbsp;
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <th>Institutional Setting</th>
+                                    <td>University Hospital</td>
+                                </tr>
+                                <tr>
+                                    <th>Participates in ERAS</th>
+                                            <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Participates in NRMP Main Match</th>
+                                            <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Accreditation Status</th>
+                                    <td>Initial Accreditation</td>
+                                </tr>
+                                <tr>
+                                    <th>Accreditation Effective Date</th>
+                                    <td>4/21/2019</td>
+                                </tr>
+                                <tr>
+                                    <th>Accredited Length of Training (years)</th>
+                                        <td>6</td>
+                                </tr>
+                                <tr>
+                                    <th>Program has Osteopathic Recognition</th>
+                                            <td>No</td>
+                                </tr>
+                                <tr>
+                                    <th># of Residents Who Were Graduates of a Joint MD-PhD program</th>
+                                        <td>&ndash;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <hr />
+
+        </div>
+        <div class="text-center">
+        </div>
+    </div>
+</div>
+
+                <div class="page new-page">
+                    
+<div class="panel panel-default printPageBreak">
+    <div class="panel-heading" role="tab" id="headingAppTrends" data-toggle="collapse" data-parent="#accordion" href="#collapseAppTrends" aria-expanded="true" aria-controls="collapseAppTrends">
+        <div class="panel-title">
+            <a id="toggle-link">
+                <div class="row">
+                    <div class="col-sm-10"><h2>Application & Match Trends</h2></div>
+                    <div class="col-sm-2"><div class="text-right"> <span class="fas fa-caret-down pull-right"></span> <span class="fas fa-question-circle" id="appTrendsInfo"></span></div></div>
+                </div>
+            </a>
+        </div>
+
+
+        <script>kendo.syncReady(function(){jQuery("#appTrendsInfo").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#appTrendsContentTemplate').html())});});</script>
+        <script id="appTrendsContentTemplate" type="text/x-kendo-template">
+            <p>
+                Data in the Application Trends chart reflect counts of ERAS applications submitted to this program. Data in the Program Selectivity chart were drawn from the AAMC ERAS database and the NRMP database.
+
+            </p>
+        </script>
+
+    </div>
+    <div id="collapseAppTrends" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAppTrends">
+        <div class="panel-body row" style="margin-bottom: 0;">
+            <div class="col-md-6">
+                <h3 class="text-center">Application Trends</h3>
+                        <div id="NumOfApplicants">
+                            <div id="NumOfApplicants" name="NumOfApplicants"></div><script>kendo.syncReady(function(){jQuery("#NumOfApplicants").kendoChart({"categoryAxis":[{"majorGridLines":{"visible":false},"title":{"text":"Application Year"},"categories":["2017","2018","2019","2020"]}],"chartArea":{"background":"transparent"},"legend":{"visible":false},"series":[{"data":[0.0,0.0,0.0,254.0],"type":"line"}],"tooltip":{"template":"#= kendo.format(\u0027{0:N0}\u0027, value) #","visible":true},"valueAxis":[{"labels":{"template":"#= kendo.format(\u0027{0:N0}\u0027, value) #"},"line":{"visible":false},"type":"numeric"}],"seriesDefaults":{"line":{"color":"#017BC0"}}});});</script>
+                            <script>
+                                var rd = [0, 0, 0, 254];
+                                var data = [];
+                                var category = ["2017", "2018", "2019", "2020"];
+                                var i = 0;
+                                for (var key in rd) {
+                                            data.push({
+                                                category: category[i],
+                                                value: rd[key],
+                                                color: "#017BC0"
+                                            });
+                                            i++;
+                                }
+
+                                $("#NumOfApplicants").kendoChart({
+
+                                    dataBound: onDataBound,
+                                  //  title: { text: "Application Year" },
+                                    dataSource: { data: data },
+                                            series: [{
+                                                type: "line",
+                                                field: "value",
+                                                categoryField: "category",
+                                                color: "#017BC0",
+                                                name: "# of Applicants"
+                                    }],
+
+                                            chartArea: { background: "transparent" },
+                                    legend: { visible: false },
+                                    seriesDefaults: { type: "line"},
+                                            valueAxis: {
+                                                lines: { visible: false },
+                                                title: {
+                                                    text: "# of Applicants",
+                                                    visible: true,
+                                                    color: "#000000",
+                                                }
+                                            },
+                                            categoryAxis: {
+                                                majorGridLines: { visible: false },
+                                                title: {
+                                                    text: "Application Year",
+                                                    visible: true,
+                                                    color: "#000000",
+                                                }
+                                            },
+                                            tooltip: { visible: true, template: "#= value #" }
+                                        });
+                            </script>
+                        </div>
+                <div class="text-muted" style="margin-bottom:0; position: relative; top: -5px">
+                    Application year indicates the ERAS season. An application season runs from July to May, thus the 2020 season ran from July 2019 through May 2020.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+
+                <h3 class="text-center">2020 Match Outcomes</h3>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table-bordered table table-condensed" style="margin: 0">
+
+                                <tr>
+                                    <th># of Positions Offered:</th>
+                                    <td>1</td>
+                                    </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table-bordered table table-condensed" style="margin: 0">
+                              
+                                    <tr>
+                                        <th># of Positions Filled:</th>
+                                   
+                                        <td>1</td>
+                                        </tr>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="text-muted" style="margin-bottom: 20px;">
+                            Data in the Match Outcomes table reflect the # of Positions Offered and Positions Filled when the matching algorithm was processed and does not include positions in SOAP.
+                        </div>
+
+                    <h3 class="text-center" style="margin-bottom:20px;">2019 Program Selectivity</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead valign="bottom" style="vertical-align:bottom;">
+                                <tr class="active">
+                                    <th>
+                                        &nbsp;
+                                    </th>
+                                    <th valign="bottom" style="vertical-align:bottom; text-align: center;">This Program</th>
+                                    <th width="38%" style="text-align: center;">Average for ACGME <br />Plastic Surgery - Integrated Programs</th>
+                                </tr>
+                            </thead>
+
+                            <tr>
+                                <th>
+                                    # of Positions Offered in the<br />NRMP Main Residency Match:
+                                </th>
+                                <td>
+0                                </td>
+                                <td>
+2                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    # of Applicants:
+                                </th>
+                                <td>
+0                                </td>
+                                <td>
+199                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    % of Applicants<br /> Interviewed:
+                                </th>
+                                <td>
+                                        <span class="text-muted">&ndash;</span>
+                                </td>
+                                <td>
+16.4                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    td {
+        text-align: center;
+    }
+
+    th, td {
+        vertical-align: middle;
+    }
+</style>
+
+<script>
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+</script>
+
+                </div>
+                <div class="page new-page">
+                    
+<div class="panel panel-default" id="SimilarityPanel">
+    <div class="panel-heading" role="tab" id="headingSimScore" data-toggle="collapse" data-parent="#accordion" href="#collapseSimScore" aria-expanded="true" aria-controls="collapseSimScore">
+        <div class="panel-title">
+            <a id="toggle-link">
+                <div class="row" style="margin-right: -15px!important;">
+                    <div class="col-sm-10">
+                        <h2>How Your Profile Compares to Matched Applicants</h2>
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <div class="pull-right"><span class="fas fa-caret-down "></span></div>
+                        <span class="fas fa-question-circle" id="profileCompareInfo"></span>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+
+        <script>kendo.syncReady(function(){jQuery("#profileCompareInfo").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#profileCompareTemplate').html())});});</script>
+        <script id="profileCompareTemplate" type="text/x-kendo-template">
+            <p>
+                Data in this section compare the data you provided in your profile (shown in green) with the aggregate data of applicants who matched to the program in the NRMP's Main Residency Match between 2016 and 2020. Data in this section were drawn from ERAS, NBME, NBOME and NRMP databases. The bars in the charts below correspond to the percentage of matched applicants who provided responses to the experiences and peer-reviewed publications questions in their ERAS application.
+
+            </p>
+        </script>
+
+    </div>
+    <div id="collapseSimScore" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSimScore">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <h5 style="margin:0;">Your characteristics compared to applicants who matched to this program </h5>
+
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="row legend" style="margin:0">
+                                <div class="fa fa-square green">&nbsp;</div>
+                                <em>Your Characteristics</em>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row ">
+                        <div class="col-xs-6 chart-group">
+                            <h3>Work Experiences</h3>
+                                    <div class="na">
+                                        <p class="text-muted">We are not able to assess your similarity to matched appicants on this characteristic because data are available for fewer than ten matched applicants in this program.</p>
+                                    </div>
+                        </div>
+                        <div class="col-xs-6 chart-group">
+                            <h3>Volunteer Experiences</h3>
+                                    <div class="na">
+                                        <p class="text-muted">We are not able to assess your similarity to matched appicants on this characteristic because data are available for fewer than ten matched applicants in this program.</p>
+                                    </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 ">
+                            <h3>Research Experiences</h3>
+                                    <div class="na">
+                                        <p class="text-muted">We are not able to assess your similarity to matched appicants on this characteristic because data are available for fewer than ten matched applicants in this program.</p>
+                                    </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <h3>Peer-Reviewed Publications</h3>
+                                    <div class="na">
+                                        <p class="text-muted">We are not able to assess your similarity to matched appicants on this characteristic because data are available for fewer than ten matched applicants in this program.</p>
+                                    </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+
+                                <div class="col-sm-6 border-right">
+                                    <div class="legend">
+                                        <div class="pull-left"><div class="green-value">250</div></div>
+                                        <h3>USMLE Step 1 Score</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            Does your score fall within the range of matched applicants at this program?
+                                        </label>
+                                            <span class="text-muted">
+                                                -
+                                            </span>
+                                    </div>
+                                            <label>
+                                                This program self-reported its current residents’ average scores fell in the following range:
+                                            </label>
+
+                                        <span class="text-muted">
+                                            -
+                                        </span>
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Step 2CK Score-->
+                                    <div class="legend">
+                                        <div class="pull-left"><div class="green-value">250</div></div>
+                                        <h3>USMLE Step 2CK Score</h3>
+                                    </div>
+
+                                    <label>Does your score fall within the range of matched applicants at this program?</label>
+                                        <span class="text-muted">
+                                            -
+                                        </span>
+                                    <!---->
+                                </div>
+                    </div>
+                </div>
+    </div>
+</div>
+
+
+
+
+                </div>
+                <div class="page new-page">
+                    
+    <div class="panel panel-default printPageBreak">
+        <div class="panel-heading" role="tab" id="headingApplicantInfo" data-toggle="collapse" data-parent="#accordion" href="#collapseApplicantInfo" aria-expanded="true" aria-controls="collapseApplicantInfo">
+            <div class="panel-title">
+                <a id="toggle-link">
+                    <div class="row">
+                        <div class="col-sm-10"><h2>Applicant Information</h2></div>
+                        <div class="col-sm-2 text-right">
+                            <div class="pull-right"><span class="fas fa-caret-down "></span></div>
+                            <span class="fas fa-question-circle" id="appInfo"></span>
+                        </div>
+                        <script>kendo.syncReady(function(){jQuery("#appInfo").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#appInfoTemplate').html())});});</script>
+                        <script id="appInfoTemplate" type="text/x-kendo-template">
+                            <p>
+                                Data in this section were reported by residency programs in the most recent National GME Census Survey and ERAS database.
+
+                            </p>
+                        </script>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="collapseApplicantInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingApplicantInfo">
+            <div class="panel-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h3>
+                            Score Requirements
+                        </h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered  table-hover">
+                                <thead>
+                                    <tr class="active">
+                                        <th colspan="2">USMLE Score Requirements</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>Step 1 Required for Interview Consideration</th>
+                                            <td class="text-right"><span class="fa fa-check-circle"></span> Yes</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Minimum Step 1 Score for Interview Consideration</th>
+                                        <td class="text-right">240</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Step 2 Required for Interview Consideration</th>
+                                            <td class="text-right">
+                                                <span class="fa fa-check-circle"></span> Yes
+                                            </td>
+                                </tr>
+                                <tr>
+                                    <th>Minimum Step 2 Score for Interview Consideration</th>
+                                        <td class="text-right">235</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" style="margin-bottom: 0;">
+                                <thead>
+                                    <tr class="active">
+                                        <th colspan="2">COMLEX - USA Score Requirements</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>Level 1 Required for Interview Consideration</th>
+                                        <td class="text-right">
+                                            <span class="text-muted">&ndash;</span>
+                                        </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Minimum Level 1 Score for Interview Consideration</th>
+                                        <td class="text-right"><span class="text-muted">&ndash;</span></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Level 2 Required for Interview Consideration</th>
+                                        <td class="text-right">
+                                            <span class="text-muted">&ndash;</span>
+                                        </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Minimum Level 2 Score for Interview Consideration</th>
+                                        <td class="text-right"><span class="text-muted">&ndash;</span></td>
+                                </tr>
+
+
+                            </table>
+
+                            <table class="table table-hover" style="margin-top: 20px; margin-bottom: 0;">
+                                <tr style="border-bottom: 0;">
+                                    <th style="border: 0">Must pass either the USMLE Step 2 CS exam or the COMLEX Level 2 PE exam on the first try</th>
+                                            <td class="text-right" style="border: 0">
+                                                <span class="fa fa-check-circle"></span> Yes
+                                            </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3>More Information</h3>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered  table-hover">
+                                <thead>
+                                    <tr class="active">
+                                        <th colspan="2">
+                                            Visa Status Information
+                                            <p class="text-muted">This program will consider an appropriately qualified applicant with the following visa or visa status:</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>J-1 Sponsorship through ECFMG</th>
+                                            <td class="text-right">
+                                                No
+                                            </td>
+                                </tr>
+
+                                <tr>
+                                    <th>H1-B</th>
+                                            <td class="text-right">
+                                                No
+                                            </td>
+                                </tr>
+
+                                <tr>
+                                    <th>F-1 (OPT Program)</th>
+                                            <td class="text-right">
+                                                No
+                                            </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" style="margin-bottom: 0;">
+                                <thead>
+                                    <tr class="active">
+                                        <th colspan="2">Other Information</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th># of required letters of recommendation</th>
+                                        <td class="text-right">3</td>
+
+                                </tr>
+
+                                <tr>
+                                    <th>Interviews available via web conferencing*</th>
+                                            <td class="text-right">
+                                                <span class="fa fa-check-circle"></span> Yes
+                                            </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <p class="text-muted">*Response reported prior to the COVID-19 pandemic. Please check the program website for more information.</p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <h3>
+                    Honor Society Membership
+                </h3>
+
+                <p class="text-muted">Percentage of matched applicants to program with the given membership</p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr class="active">
+                                        <th>Membership</th>
+                                        <th class="text-center">This Program</th>
+                                        <th class="text-center">This Specialty</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>Alpha Omega Alpha (AOA)</th>
+                                            <td class="text-center"><span class="text-muted"><span class="text-muted">&ndash;</span></span></td>
+                                            <td class="text-center">40%</td>
+                                </tr>
+                                <tr>
+                                    <th>Gold Humanism Honor Society (GHHS)</th>
+                                            <td class="text-center"><span class="text-muted"><span class="text-muted">&ndash;</span></span></td>
+                                            <td class="text-center">5%</td>
+                                </tr>
+                                <tr>
+                                    <th>Sigma Sigma Phi (SSP)</th>
+                                            <td class="text-center"><span class="text-muted"><span class="text-muted">&ndash;</span></span></td>
+                                            <td class="text-center">1%</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                </div>
+                <div class="page new-page">
+                    
+    <div class="panel panel-default printPageBreak">
+        <div class="panel-heading" role="tab" id="headingSalaryBenefits" data-toggle="collapse" data-parent="#accordion" href="#collapseSalaryBenefits" aria-expanded="true" aria-controls="collapseSalaryBenefits">
+            <div class="panel-title">
+                <a id="toggle-link">
+                    <div class="row">
+                        <div class="col-sm-10"><h2>Resident Salary and Benefits</h2></div>
+                        <div class="col-sm-2 text-right">
+                            <div class="pull-right"><span class="fas fa-caret-down "></span></div>
+                            <span class="fas fa-question-circle" id="resSalaryBenefits"></span>
+                        </div>
+                        <script>kendo.syncReady(function(){jQuery("#resSalaryBenefits").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#resSalaryBenefitsTemplate').html())});});</script>
+                        <script id="resSalaryBenefitsTemplate" type="text/x-kendo-template">
+                            <p>
+                                Data in this section were reported by residency programs in the most recent National GME Census Survey.
+                            </p>
+                        </script>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="collapseSalaryBenefits" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSalaryBenefits">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <h3>Resident Salary and Leave, By Year</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr class="active">
+                                        <th>
+                                            Program Year
+                                        </th>
+                                        <th>
+                                            Salary
+                                        </th>
+                                        <th>
+                                            # of Paid Sick Days
+                                        </th>
+                                        <th>
+                                            # of Paid Vacation Days
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>PGY1</th>
+                                            <td class="text-left">$58,279</td>
+                                            <td>Negotiable</td>
+                                            <td>28</td>
+                                </tr>
+                                <tr>
+                                    <th>PGY2</th>
+                                            <td class="text-left">$61,913</td>
+                                            <td>Negotiable</td>
+                                            <td>28</td>
+                                </tr>
+                                <tr>
+                                    <th>PGY3</th>
+                                            <td class="text-left">$63,890</td>
+                                            <td>Negotiable</td>
+                                            <td>28</td>
+                                </tr>
+                            <tr>
+                                <th>PGY4</th>
+                                        <td class="text-left">$67,051</td>
+                                        <td>Negotiable</td>
+                                        <td>28</td>
+                            </tr>
+                                
+                            <tr>
+                                <th>PGY5</th>
+                                        <td class="text-left">$70,205</td>
+                                        <td>Negotiable</td>
+                                        <td>28</td>
+                            </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <h3>
+                            Program Employment Benefits
+                        </h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr class="active">
+                                        <th colspan="2">Benefit Offered to Residents</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>Part-time/shared schedule positions</th>
+                                                <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>On-site child care</th>
+                                                <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Subsidized child care</th>
+                                                <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Moving allowance</th>
+                                                <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Salary advance for moving/other expenses</th>
+                                            <td class="text-right"><span class="text-muted">&ndash;</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Housing stipend</th>
+                                                <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Free parking</th>
+                                                <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>On-call meal allowance</th>
+                                                <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Tablets/technology allowance</th>
+                                                <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Placement assistance upon program completion</th>
+                                                <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Average # of days off per week in Year 1</th>
+                                            <td class="text-right">1</td>
+                                </tr>
+                                <tr>
+                                    <th>Maximum # of paid days for family/medical leave</th>
+                                            <td class="text-right">90</td>
+                                </tr>
+                                <tr>
+                                    <th>Maximum # of unpaid days for family/medical leave</th>
+                                            <td class="text-right"><span class="text-muted">&ndash;</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+<div class="panel panel-default printPageBreak">
+    <div class="panel-heading" role="tab" id="headingResPractiveEnv" data-toggle="collapse" data-parent="#accordion" href="#collapseResPractiveEnv" aria-expanded="true" aria-controls="collapseResPractiveEnv">
+        <div class="panel-title">
+            <a id="toggle-link">
+                <div class="row">
+                    <div class="col-sm-10"><h2>Resident Practice and Educational Environment</h2></div>
+                    <div class="col-sm-2 text-right">
+                        <div class="pull-right"><span class="fas fa-caret-down "></span></div>
+                        <span class="fas fa-question-circle" id="ResPractiveEnv"></span>
+                    </div>
+                    <script>kendo.syncReady(function(){jQuery("#ResPractiveEnv").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#ResPractiveEnvTemplate').html())});});</script>
+                    <script id="ResPractiveEnvTemplate" type="text/x-kendo-template">
+                        <p>
+                            Data in this section were reported by residency programs in the most recent National GME Census Survey.
+                        </p>
+                    </script>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div id="collapseResPractiveEnv" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingResPractiveEnv">
+        <div class="panel-body">
+            <div class="row">
+            <div class="col-md-6">
+                <h3>Practice Environment</h3>
+                <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th width="85%">Average hours per week in Year 1 that residents work</th>
+                            <td class="text-right">50 hrs.</td>
+                    </tr>
+                    <tr>
+                        <th>Maximum consecutive hours resident is allowed to work in Year 1</th>
+                            <td class="text-right">28 hrs.</td>
+                    </tr>
+                    <tr>
+                        <th>Program allows residents/fellows beyond PGY1 to moonlight</th>
+                                <td class="text-right">No</td>
+                    </tr>
+                    <tr>
+                        <th>Percentage of time residents in this program spend at its primary teaching site</th>
+                            <td class="text-right">80%</td>
+                    </tr>
+                    <tr>
+                        <th>Percentage of training spent by residents/fellows in Year 1 in hospital outpatient clinics in all teaching hospitals used</th>
+                            <td class="text-right">30%</td>
+                    </tr>
+                    <tr>
+                        <th>Percentage of training spent by residents/fellows in Year 1 in ambulatory nonhospital community-based settings not attached to any hospital</th>
+                            <td class="text-right"><span class="text-muted">&ndash;</span></td>
+                    </tr>
+                </table>
+            </div>
+                </div>
+
+            <div class="col-md-6">
+                <h3>Education and Research Environment</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>Dedicated research rotation</th>
+ <td class="text-right">Required</td>
+                        </tr>
+                        <tr>
+                            <th># of weeks in required research rotation</th>
+                                <td class="text-right">52</td>
+                        </tr>
+                        <tr>
+                            <th>Average hours per week in Year 1 that residents/fellow are expected to attend regularly scheduled lectures/conferences</th>
+                                <td class="text-right">4</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>                
+            </div>
+            </div>
+        </div>
+    </div>
+
+                </div>
+                <div class="page new-page">
+                    
+
+<div class="panel panel-default printPageBreak">
+    <div class="panel-heading" role="tab" id="headingcollapseEdResearchOpps" data-toggle="collapse" data-parent="#accordion" href="#collapseEdResearchOpps" aria-expanded="true" aria-controls="collapsecollapseEdResearchOpps">
+        <div class="panel-title">
+            <a id="toggle-link">
+                <div class="row">
+                    <div class="col-sm-10">  <h2>Educational and Research Opportunities</h2></div>
+                    <div class="col-sm-2 text-right">
+                        <div class="pull-right"><span class="fas fa-caret-down "></span></div>
+                        <span class="fas fa-question-circle" id="EdResearchOpps"></span>
+                    </div>
+                    <script>kendo.syncReady(function(){jQuery("#EdResearchOpps").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#EdResearchOppsTemplate').html())});});</script>
+                    <script id="EdResearchOppsTemplate" type="text/x-kendo-template">
+                        <p>
+                            Data in this section were reported by residency programs in the most recent National GME Census Survey.
+                        </p>
+                    </script>
+                </div>
+
+
+              
+            </a>
+        </div>
+    </div>
+
+
+    <div id="collapseEdResearchOpps" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEdResearchOpps">
+        <div class="panel-body">
+
+               
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <h3>Educational Benefits</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th>Integrative medicine curriculum</th>
+                                            <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Formal mentoring program</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Formal program to assist residents/fellows in developing teaching skills</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Formal program to foster interprofessional teamwork</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Instruction in medical Spanish or other non-English language</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Alternative/complementary medicine curriculum</th>
+                                            <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Economics of health care systems curriculum</th>
+                                            <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Debt management and financial counseling</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>International experience/global health</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Resident/fellow retreats</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Hospice/home care experience</th>
+                                            <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>MPH, MBA, PhD or other advanced degree training</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                                <tr>
+                                    <th>Academic support for USMLE Step 3 prep</th>
+                                            <td class="text-right">No</td>
+                                </tr>
+                                <tr>
+                                    <th>Health systems leadership skills curriculum</th>
+                                            <td class="text-right"><span class="fa fa-check-circle">&nbsp;</span> Yes</td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                    </div>
+                        <div class="col-md-5">
+                            <h3>Special Tracks</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <tr>
+                                        <th>Hospitalist</th>
+                                                <td class="text-right">No</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Primary Care</th>
+                                                <td class="text-right">No</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Non-accredited research track/fellowship</th>
+                                                <td class="text-right">No</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Rural</th>
+                                                <td class="text-right">No</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Women's Health</th>
+                                                <td class="text-right">No</td>
+                                    </tr>
+                                </table>
+                              </div>
+                        </div>
+
+                </div>
+
+           </div>
+    </div>
+    </div>
+
+                </div>
+                <div class="page new-page">
+                    
+<div class="panel panel-default printPageBreak">
+    <div class="panel-heading" role="tab" id="headingResDemoAndBkgd" data-toggle="collapse" data-parent="#accordion" href="#collapseResDemoAndBkgd" aria-expanded="true" aria-controls="collapseResDemoAndBkgd">
+        <div class="panel-title">
+            <a id="toggle-link">
+                <div class="row">
+                    <div class="col-sm-10"><h2>Resident Demographics and Background, All Training Years</h2></div>
+                    <div class="col-sm-2"><div class="text-right"> <span class="fas fa-caret-down pull-right"></span> <span class="fas fa-question-circle" id="resDemoBkgdInfo"></span></div></div>
+                </div>
+            </a>
+        </div>
+
+        <script>kendo.syncReady(function(){jQuery("#resDemoBkgdInfo").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#resDemoBkgdContentTemplate').html())});});</script>
+        <script id="resDemoBkgdContentTemplate" type="text/x-kendo-template">
+            <p>
+                Data in this section were drawn from the AAMC's ERAS database and the most recent National GME Census Survey and reflect percentages of all residents in the program in 2018 who self-reported their race/ethnicity, sex, and medical student type at the time of their residency application. Only residents who were either U.S. citizens or permanent residents at the time of their application are included in race/ethnicity counts. Some individuals may report multiple races/ethnicities.
+
+            </p>
+        </script>
+
+    </div>
+    <div id="collapseResDemoAndBkgd" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingResDemoAndBkgd">
+        <div class="panel-body">
+            <h5 style="margin: 0;">
+                Demographics are one facet of the training environment. Many programs have strong commitments to diversity, equity, and inclusion that may not be fully represented in demographic reports. We encourage applicants to visit programs' websites to learn more about a program's unique education, culture and practice environment.
+            </h5>
+            <hr/>
+            <div class="row">
+                <h3 class="text-center">Percentage of Residents by Race/Ethnicity</h3>
+                <div class="col-sm-6">
+                    <h5 class="text-center"><b>This Program</b></h5>
+                                <div class="na">
+                                    <div>
+                                        <div class="text-center">
+                                            <span class="text-muted">Data Not Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                <div class="col-sm-6">
+                    <h5 class="text-center"><b>Average for ACGME Plastic Surgery - Integrated Programs</b></h5>
+                    <div class="">
+
+                                <div class="na">
+                                    <div>
+                                        <div class="text-center">
+                                            <span class="text-muted">Data Not Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+                <p class="text-muted text-center">
+                    Data reflects who self-identified race/ethnicity alone or in combination with other race/ethnicities at the time of their ERAS application. These totals may not equal 100%. Only residents who are U.S. citizens,  permanent residents, or asylees at the time of their application are included in race/ethnicity counts. Some individuals may report multiple races/ethnicities.
+                </p>
+            </div>
+           
+            <hr />
+            <div class="row">
+                <h3 class="text-center">Percentage of Residents by Sex</h3>
+                <div class="col-sm-6">
+                    <h5 class="text-center"><b>This Program</b></h5>
+                    <div class="">
+
+                                <div class="na">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-center">
+                                            <h3 style="color:#000; font-weight: normal;">Sex</h3>
+                                            <span class="text-muted">Data Not Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h5 class="text-center"><b>Average for ACGME Plastic Surgery - Integrated Program</b></h5>
+                    <div class="">
+
+                                <div>
+                                    <div class="row printPageBreak browser-safari">
+                                        <div id="safari-specialtySexDictionary" class="col-xs-12"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    var rd = {"Men":60,"Women":40,"Did Not Report":0};
+                                    var data = [];
+                                    for (var key in rd) {
+                                        data.push({
+                                            category: key,
+                                            value: rd[key],
+                                            color: "#8CC53F"
+                                        });
+                                    }
+                                    var len = data.length;
+                                    $("#safari-specialtySexDictionary").kendoChart({
+                                        dataBound: onDataBound,
+                                        dataSource: { data: data },
+                                        series: [{
+                                            type: "bar",
+                                            field: "value",
+                                            categoryField: "category"
+                                        }],
+                                        chartArea: { background: "transparent", height: len*70 },
+                                        legend: { visible: false },
+                                        seriesDefaults: { type: "bar", gap: 2 },
+                                        valueAxis: {
+                                            lines: { visible: false },
+                                            minorGridLines: { visible: false },
+                                            labels: { visible: false },
+                                            majorGridLines: { visible: false }
+                                        },
+                                        // Safari Category Axis Styles
+                                        categoryAxis: {
+                                            labels: {
+
+                                                visual: function (e) {
+                                                    var visual = new kendo.drawing.Group();
+
+                                                    var rect = new kendo.geometry.Rect(e.rect.origin, [e.rect.size.width, e.rect.size.height]);
+                                                    var layout = new kendo.drawing.Layout(rect, {
+                                                        justifyContent: "end",
+                                                        orientation: "horizontal",
+                                                        wrap: true,
+                                                        spacing: 4
+                                                    });
+
+                                                    var text = e.text.replace();
+
+                                                    var value = e.dataItem.value;
+                                                    var txt1 = new kendo.drawing.Text(text, [0, 0], { font: "bold 12px sans-serif " });
+                                                    var txt2 = new kendo.drawing.Text(value + "%", [0, 0], { font: "12px sans-serif " });
+
+
+
+                                                    layout.append(txt1, txt2);
+
+                                                    layout.reflow();
+
+                                                    // Render the content
+                                                    visual.append(layout);
+
+                                                    return visual;
+                                                },
+
+                                            }
+                                        },
+                                        tooltip: { visible: true, template: "#= category #: #= value #%" }
+                                    });
+                                </script>
+                                <div>
+                                    <div class="row printPageBreak browser-other">
+                                        <div id="other-specialtySexDictionary" class="col-xs-12"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    var rd = {"Men":60,"Women":40,"Did Not Report":0};
+                                    var data = [];
+                                    for (var key in rd) {
+                                        data.push({
+                                            category: key,
+                                            value: rd[key],
+                                            color: "#8CC53F"
+                                        });
+                                    }
+                                    var len = data.length;
+                                    $("#other-specialtySexDictionary").kendoChart({
+                                        dataBound: onDataBound,
+                                        dataSource: { data: data },
+                                        series: [{
+                                            type: "bar",
+                                            field: "value",
+                                            categoryField: "category"
+                                        }],
+                                        chartArea: { background: "transparent", height: len*70 },
+                                        legend: { visible: false },
+                                        seriesDefaults: { type: "bar", gap: 2 },
+                                        valueAxis: {
+                                            lines: { visible: false },
+                                            minorGridLines: { visible: false },
+                                            labels: { visible: false },
+                                            majorGridLines: { visible: false }
+                                        },
+                                        // Other Browser Category Axis Styles
+                                        categoryAxis: {
+                                            lines: { visible: false },
+                                            labels: {
+                                                visual: function (e) {
+                                                    // Build an HTML fragment and append it to the body
+                                                    var title =
+                                                        "<div style='display:table'>" +
+                                                        "<div style='display:table-cell; padding-right:10px; text-align: right; font-weight: bold;'>" + e.text.replace(" or ", " or<br />") + "</div>" +
+                                                        "<div style='display:table-cell; vertical-align: middle;'>" + e.dataItem.value + "%</div>"
+                                                    "</div>";
+
+                                                    var html = $(title)
+                                                        .appendTo(document.body);
+
+                                                    // Create an empty group that will hold the rendered label
+                                                    var visual = new kendo.drawing.Group();
+
+                                                    // Store a reference to the target rectangle, see below
+                                                    var rect = e.rect;
+
+                                                    kendo.drawing.drawDOM(html)
+                                                        .done(function (group) {
+                                                            // Clean-up HTML fragment
+                                                            html.remove();
+
+                                                            // Center the label using Layout
+                                                            var layout = new kendo.drawing.Layout(rect, {
+                                                                justifyContent: "center"
+                                                            });
+                                                            layout.append(group);
+                                                            layout.reflow();
+
+                                                            // Render the content
+                                                            visual.append(layout);
+                                                        });
+
+                                                    return visual;
+                                                }
+                                            },
+                                            majorGridLines: { visible: false }
+                                        },
+                                        tooltip: { visible: true, template: "#= category #: #= value #%" }
+                                    });
+                                </script>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <h3 class="text-center">Percentage of Residents by Medical Student Type</h3>
+                <div class="col-sm-6">
+                    <h5 class="text-center"><b>This Program</b></h5>
+                    <div class="">
+
+                                <div class="na">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-center">
+                                            <h3 style="color:#000; font-weight: normal;">Medical Student Type</h3>
+                                            <span class="text-muted">Data Not Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h5 class="text-center"><b>Average for ACGME Plastic Surgery - Integrated Program</b></h5>
+                    <div class="">
+
+                                <div class="row printPageBreak browser-safari">
+                                    <div id="safari-specialtyStudentTypeDictionary" class="col-xs-12"></div>
+                                </div>
+                                <script>
+                                    var rd = {"US MD Graduates":96,"US DO Graduates":1,"Non-US Citizen International Medical Graduates":1,"US Citizen International Medical Graduates":2};
+                                    var data = [];
+                                    for (var key in rd) {
+                                        data.push({
+                                            category: key,
+                                            value: rd[key],
+                                            color: "#8CC53F"
+                                        });
+                                    }
+                                    var len = data.length;
+                                    $("#safari-specialtyStudentTypeDictionary").kendoChart({
+                                        renderAs: "canvas",
+                                        dataBound: onDataBound,
+                                        dataSource: { data: data },
+                                        series: [{
+                                            type: "bar",
+                                            field: "value",
+                                            categoryField: "category"
+                                        }],
+                                        chartArea: { background: "transparent", height: len*70 },
+                                        legend: { visible: false },
+                                        seriesDefaults: { type: "bar", gap: 2 },
+                                        valueAxis: {
+                                            lines: { visible: false },
+                                            minorGridLines: { visible: false },
+                                            labels: { visible: false },
+                                            majorGridLines: { visible: false }
+                                        },
+                                        // Safari Category Axis Styles
+                                        categoryAxis: {
+                                            labels: {
+
+                                                visual: function (e) {
+                                                    var visual = new kendo.drawing.Group();
+
+                                                    var rect = new kendo.geometry.Rect(e.rect.origin, [e.rect.size.width, e.rect.size.height]);
+                                                    var layout = new kendo.drawing.Layout(rect, {
+                                                        justifyContent: "end",
+                                                        orientation: "horizontal",
+                                                        wrap: true,
+                                                        spacing: 4
+                                                    });
+
+                                                    var text = e.text.replace();
+
+                                                    var value = e.dataItem.value;
+                                                    var txt1 = new kendo.drawing.Text(text, [0, 0], { font: "bold 12px sans-serif " });
+                                                    var txt2 = new kendo.drawing.Text(value + "%", [0, 0], { font: "12px sans-serif " });
+
+
+
+                                                    layout.append(txt1, txt2);
+
+                                                    layout.reflow();
+
+                                                    // Render the content
+                                                    visual.append(layout);
+
+                                                    return visual;
+                                                },
+
+                                            }
+                                        },
+                                        tooltip: { visible: true, template: "#= category #: #= value #%" }
+                                    });
+                                </script>
+                                <div class="row printPageBreak browser-other">
+                                    <div id="other-specialtyStudentTypeDictionary" class="col-xs-12"></div>
+                                </div>
+                                <script>
+                                    var rd = {"US MD Graduates":96,"US DO Graduates":1,"Non-US Citizen International Medical Graduates":1,"US Citizen International Medical Graduates":2};
+                                    var data = [];
+                                    for (var key in rd) {
+                                        data.push({
+                                            category: key,
+                                            value: rd[key],
+                                            color: "#8CC53F"
+                                        });
+                                    }
+                                    var len = data.length;
+                                    $("#other-specialtyStudentTypeDictionary").kendoChart({
+                                        renderAs: "canvas",
+                                        dataBound: onDataBound,
+                                        dataSource: { data: data },
+                                        series: [{
+                                            type: "bar",
+                                            field: "value",
+                                            categoryField: "category"
+                                        }],
+                                        chartArea: { background: "transparent", height: len*70 },
+                                        legend: { visible: false },
+                                        seriesDefaults: { type: "bar", gap: 2 },
+                                        valueAxis: {
+                                            lines: { visible: false },
+                                            minorGridLines: { visible: false },
+                                            labels: { visible: false },
+                                            majorGridLines: { visible: false }
+                                        },
+                                        // Other Browser Category Axis Styles
+                                        categoryAxis: {
+                                            lines: { visible: false },
+                                            labels: {
+                                                visual: function (e) {
+                                                    // Build an HTML fragment and append it to the body
+                                                    var title =
+                                                        "<div style='display:table'>" +
+                                                        "<div style='display:table-cell; padding-right:10px; text-align: right; font-weight: bold;'>" + e.text.replace(" or ", " or<br />") + "</div>" +
+                                                        "<div style='display:table-cell; vertical-align: middle;'>" + e.dataItem.value + "%</div>"
+                                                    "</div>";
+
+                                                    var html = $(title)
+                                                        .appendTo(document.body);
+
+                                                    // Create an empty group that will hold the rendered label
+                                                    var visual = new kendo.drawing.Group();
+
+                                                    // Store a reference to the target rectangle, see below
+                                                    var rect = e.rect;
+
+                                                    kendo.drawing.drawDOM(html)
+                                                        .done(function (group) {
+                                                            // Clean-up HTML fragment
+                                                            html.remove();
+
+                                                            // Center the label using Layout
+                                                            var layout = new kendo.drawing.Layout(rect, {
+                                                                justifyContent: "center"
+                                                            });
+                                                            layout.append(group);
+                                                            layout.reflow();
+
+                                                            // Render the content
+                                                            visual.append(layout);
+                                                        });
+
+                                                    return visual;
+                                                }
+                                            },
+                                            majorGridLines: { visible: false }
+                                        },
+                                        tooltip: { visible: true, template: "#= category #: #= value #%" }
+                                    });
+                                </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <hr style="margin-bottom:0;"/>
+</div>
+<script>
+    //GetProgramRaceDictionary();
+    //GetSpecialtyRaceDictionary();
+    //GetStudentTypeDictionary();
+    //GetSpecialtyStudentTypeDictionary();
+    //GetSexDictionary();
+    //GetSpecialtySexDictionary()
+</script>
+
+
+                </div>
+                <div class="page new-page">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTop5" data-toggle="collapse" data-parent="#accordion" href="#collapseTop5" aria-expanded="true" aria-controls="collapseTop5">
+                            <div class="panel-title">
+                                <a id="toggle-link">
+                                    <div class="row">
+                                        <div class="col-sm-10"><h2>Resident Medical School Background</h2></div>
+                                        <div class="col-sm-2"><div class="text-right"><span class="fas fa-caret-down pull-right"></span> <span class="fas fa-question-circle" id="resMedSchoolBkgdInfo"></span> </div></div>
+                                    </div>
+                                </a>
+                            </div>
+
+
+
+                            <script>kendo.syncReady(function(){jQuery("#resMedSchoolBkgdInfo").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#resMedSchoolBkgdContentTemplate').html())});});</script>
+                            <script id="resMedSchoolBkgdContentTemplate" type="text/x-kendo-template">
+                                <p>
+                                    Data in this section were reported by residency programs in the most recent National GME Census Survey and reflect the medical schools of residents (all training years) in 2018.
+
+                                </p>
+                            </script>
+
+                        </div>
+                        <div id="collapseTop5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTop5">
+                            <div class="panel-body">
+                                <div id="top5body">
+                                    <div class="microservice-loader text-center" style="width:75%; margin-left:12.5%; margin-right:12.5%;">
+                                        <h3>Generating Program Data</h3>
+                                        <img src="/images/loader.gif" class="overlay" />
+                                        
+
+
+
+<!-- Modal -->
+<div id="MedSchoolModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 1000px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Most Attended Medical Schools among Current Residents</h2>
+            </div>
+            <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Count of Resident</th>
+                                <th>Percent of Residents</th>
+                                <th>Rank</th>
+                            </tr>
+                        </thead>
+                    </table>
+            </div>
+            <div class="modal-footer">
+                <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    
+<div class="panel panel-default" style="margin-top:5px;">
+    <div class="panel-heading" role="tab" id="headingCareerPaths" data-toggle="collapse" data-parent="#accordion" href="#collapseCareerPaths" aria-expanded="true" aria-controls="collapseCareerPaths">
+        <div class="panel-title">
+            <a id="toggle-link">
+                <div class="row">
+                    <div class="col-sm-10"><h2>Resident Career Plans</h2></div>
+                    <div class="col-sm-2"><div class="text-right"> <span class="fas fa-caret-down pull-right"></span> <span class="fas fa-question-circle" id="resCareerPlansInfo"></span></div></div>
+                </div>
+            </a>
+        </div>
+
+        <script>kendo.syncReady(function(){jQuery("#resCareerPlansInfo").kendoTooltip({"width":450,"position":"left","content":kendo.template(jQuery('#resCareerPlansContentTemplate').html())});});</script>
+        <script id="resCareerPlansContentTemplate" type="text/x-kendo-template">
+            <p>
+                Data in this section were reported by residency programs in the most recent National GME Census Survey.
+
+            </p>
+        </script>
+
+    </div>
+    <div id="collapseCareerPaths" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingCareerPaths">
+        <div class="panel-body">
+            <h3 class="text-center">Graduates of the Residency Program</h3>
+
+                    <div class="na">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <span class="text-muted">Data Not Available</span>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+</div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <script>
+        $(document).ready(function () {
+            $(".backing3c").hide();
+
+            // micro service ajax
+            GetMicroServicePartial('/Program/PopulationResidentMedicalSchoolBackground', '#top5body', '3484');
+        });
+
+        function GetMicroServicePartial(url, target, id) {
+            $.ajax({
+                url: url,
+                data: { id: id },
+                type: "get",
+                dataType: "html"
+            }).done(function (reponseHtml) {
+                $(target).html(reponseHtml);
+                supportedBrowser();
+
+            })
+        }
+
+
+        $(document).on("click", ".myCompare", function (e) {
+            var id = 3484;
+            var refMedicalProgramId = 3484;
+            var myCompare = $(this).prop("checked");
+
+            $.ajax({
+                url: "/api/UserProgramSavedApi",
+                data: { id: id, RefMedicalProgramId: refMedicalProgramId, myCompare: myCompare, fieldUpdated: "myCompare"},
+                type: 'POST',
+                success: function (data) {
+                    // alert('data saved');
+                },
+                error: function (jxhr, msg, err) {
+                    alert('error');
+                }
+            });
+        });
+
+        function toggleChevron(e) {
+            $(e.target)
+                .prev(".panel-heading")
+                .find("span.fas:first-child")
+                .toggleClass('fa-caret-down fa-caret-left');
+            //$(e.target)
+            //    .prev(".panel-heading")
+            //    .find("span.fa-caret-left")
+            //    .toggleClass('fa-caret-left fa-caret-down');
+        };
+        $('.panel-group').on('hide.bs.collapse', toggleChevron);
+        $('.panel-group').on('show.bs.collapse', toggleChevron);
+    </script>
+
+    <script>
+
+    //var interval = setInterval(
+    //    function () {
+    //        var pubexp = $('#pubExp').data('kendoChart');
+    //        if (pubexp != undefined) {
+    //            pubexp.bind('dataBound', onDataBound)
+    //            clearInterval (interval)
+    //        }
+    //    }
+    //)
+
+    var data = [];
+    for (var i = 1; i < 200; ++i) {
+        data.push({ title: "Item " + i, id: i });
+    }
+
+       $("#export-pdf").click(function () {
+    // Convert the DOM element to a drawing using kendo.drawing.drawDOM
+           kendo.drawing.drawDOM(".content-wrapper", {
+               forcePageBreak: ".new-page",
+               paperSize: "A4",
+               margin: "1cm",
+               scale: 0.45,
+               template: $("#page-template").html()
+           })
+        .then(function (group) {
+             // Render the result as a PDF file
+             return kendo.drawing.exportPDF(group)
+        })
+        .done(function (data) {
+            // Save the PDF file
+            kendo.saveAs({
+                dataURI: data,
+                fileName: "ResidencyExplorer.org_ProgramDetails_Rush University Medical Center Program_10-15-2020_080451.pdf",
+            });
+        });
+    });
+    </script>
+
+<!-- Load Pako ZLIB library to enable PDF compression -->
+<script src="https://kendo.cdn.telerik.com/2017.3.913/js/pako_deflate.min.js"></script>
+<!-- -->
+
+
+    </div>
+    <div id="session-timeout-warning-modal" class="modal fade">
+        <div class="modal-dialog" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Your session is about to expire...
+                        <button class="close" type="button" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>You have <strong id="timeout-in-seconds"></strong> until you are automatically logged out.</p>
+                            <p>If you wish to continue, please choose the <strong>Extend Session</strong> option, otherwise choose the <strong>Logout</strong> option.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-extend">Extend Session</button>
+                    <button type="button" class="btn btn-default btn-logout">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer noprint ">
+        <div class="container ">
+            <div style="text-align:center; font-size: 12px;">
+                <hr />
+
+
+                <div class="partner-logos">
+                    <p class="text-center">
+                        The Residency Explorer tool is based on data and strategic guidance provided by:
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <img src="/images/AAMC-Logo-RGB.jpg" style="height: 50px; float: left;">
+                        </div>
+                        <div class="col-sm-3">
+                            <img src="/images/aacom-stacked-logo_screenedk-R.jpg" style="margin-top: 10px; float: right;">
+                        </div>
+                        <div class="col-sm-4">
+                            <img style="height: 50px;" src="/images/ACGME_Logo_Horizontal_R_redblack_rgb.jpg">
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="/images/AMA.jpg" style="margin-top: 20px; float: left;">
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="/images/ECFMG---Scala---Stack.jpg" style="margin-top: 15px;">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4">
+                            <img src="/images/fsmb-logo-horizontal.jpg" style="height: 50px;">
+                        </div>
+                        <div class="col-sm-3">
+                            <img src="/images/TheMatchNRMP_Logo_PMS301.jpg" style="margin-top: 10px;">
+                        </div>
+                        <div class="col-sm-3">
+                            <img src="/images/NBME-logo_SM_large.png">
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="/images/NBOME-MASTER-LOGO-NEW.jpg" style="margin-top: 12px;">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <p>
+                    The views expressed herein are those of the authors and do not necessarily reflect the position or policy of the organizations contributing such data.<br />All logos and trademarks appearing in the resource are the property of their respective owners.
+                </p>
+                <p>
+                    &copy;  2020 AAMC | 655 K Street, NW, Suite 100, Washington, DC, 20001-2399
+                </p>
+                <p>
+                    <a target="_blank" href="https://www.aamc.org/website-terms-conditions">Website Terms and Conditions  </a>
+                    | <a target="_blank" href="https://www.aamc.org/privacy">Privacy Statement   </a>
+                </p>
+                <p>
+                    P8558
+
+                        <span>-bf83 </span>
+                </p>
+
+
+
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        window.onload = function () {
+            // check if domain is .net or .com  and redirect (google traffic)
+            var thisdomain = document.domain;
+            if (location.href.search("https://www.residencyexplorer.org") < 0
+                && location.href.search("staging.residencyexplorer.org") < 0
+                && location.href.search("localhost") < 0
+                ) {
+                if (thisdomain.search('.net') || thisdomain.search('.com')) {
+                    location.href = 'https://www.residencyexplorer.org/';
+                }
+            }
+            // patch for HTTP vs HTTPS from client side.
+            if (location.protocol != 'https:') {
+                location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+            }
+        }
+
+        $(document).ready(function () {
+            $("#responsive-panel").kendoResponsivePanel({
+                breakpoint: 768,
+                autoClose: false,
+                orientation: "top"
+            });
+
+
+        });
+        function onclick(e) {
+            if ($("#responsive-panel").length > 0) {
+                $("#responsive-panel").getKendoResponsivePanel().toggle();
+            }
+        }
+
+        /* SESSION TIMEOUT JS */
+        function GetTimeoutValue() {
+            return parseInt('20') * 60;
+            //return 100;
+        }
+
+        // Global variable
+        var sessionTimeout;
+        var timeout;
+
+        // Starts the timeout
+        function StartTimeout() {
+            timeout = setInterval(function() {
+                sessionTimeout -= 1;
+                // If session timeout is less than 5 minutes, show modal
+                // Temp changed timeout modal to show if less than 5 minutes
+                if ((sessionTimeout / 60) <= 5) {
+                    $("#session-timeout-warning-modal strong#timeout-in-seconds").text(ConverToMinutesAndSeconds());
+                    if (!$("#session-timeout-warning-modal").is(":visible")) {
+                        $("#session-timeout-warning-modal").modal("show");
+                    }
+                }
+                // Logs the user out of the system
+                if (sessionTimeout <= 0) {
+                    clearInterval(timeout);
+                    $("#logoutForm").submit();
+                }
+            }, 1000);
+        }
+
+        function ConverToMinutesAndSeconds() {
+            var minutesLeft = Math.floor(sessionTimeout / 60);
+            var seconds = sessionTimeout - (minutesLeft * 60);
+            return minutesLeft + "m " + seconds.toString().leftPad("0",2) + "s";
+        }
+
+        String.prototype.leftPad = function(padString, length) {
+            var str = this;
+            while (str.length < length) {
+                str = padString + str;
+            }
+            return str;
+        }
+
+        // Resets the SessionTimeout
+        function ResetSessionTimeout() {
+            clearInterval(timeout);
+            // Get the value
+            sessionTimeout = GetTimeoutValue();
+            // Start the timeout counter
+            StartTimeout();
+        }
+
+        function Ping() {
+            $.ajax({
+                url: '/Home/Ping',
+                type: "get",
+                success: function() {
+                    // do nothing
+                }
+            });
+        }
+
+        // Reset the SessionTimeout when ajax success has occurred
+        $(document).ajaxComplete(function (e, xhr, settings) {
+            ResetSessionTimeout();
+        });
+
+        // Setup Reset/Logout click events
+        $("button.btn-extend").click(function() {
+            $("#session-timeout-warning-modal").modal("hide");
+            // Pings the server in hopes to reset the Identity Idle timer
+            Ping();
+            // Reset the session
+            ResetSessionTimeout();
+        });
+
+        $("button.btn-logout").click(function() {
+            $("#session-timeout-warning-modal").modal("hide");
+            $("#logoutForm").submit();
+        });
+    </script>
+        <script>
+            // Get initial timeout value
+            sessionTimeout = GetTimeoutValue();
+            // Start the timeout
+            StartTimeout();
+        </script>
+</body>
+</html>
