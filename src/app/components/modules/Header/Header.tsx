@@ -1,4 +1,4 @@
-import Icon, { Icons } from '@element/Icon/Icon';
+import Icon, { Icons } from './../../elements/Icon/Icon';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => (
