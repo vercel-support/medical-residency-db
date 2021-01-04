@@ -3,7 +3,7 @@
     "target": "es5",
     "baseUrl": "app",
     "paths": {
-      "@element/": ["components/elements/"],
+      "@element/*": ["components/elements/*"],
       "@layout/*": ["components/layouts/*"],
       "@module/*": ["components/modules/*"],
       "@template/*": ["components/templates/*"],

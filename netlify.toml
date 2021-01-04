@@ -1,5 +1,5 @@
 [build]
   base = "src"
   publish = "out"
-  command = "npm run build && npm run export"
+  command = "yarn build && yarn export"
   
