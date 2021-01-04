@@ -3,6 +3,9 @@ import Head from 'next/head';
 import Card from '@element/Card/Card';
 import React from 'react';
 import Image from 'next/image';
+import BasicHeading from '@element/BasicHeading/BasicHeading';
+import CoursesList from '@element/CoursesList/CoursesList';
+import TestimonialCarousel from '@element/TestimonialCarousel/TestimonialCarousel';
 
 const HomePage: React.FC = () => (
   <>
@@ -22,57 +25,36 @@ const HomePage: React.FC = () => (
       </div>
         </div>
       </div>
-
     </div>
-
-    <h2 className="text-center p-4">What's inside</h2>
+    <BasicHeading>What's inside</BasicHeading>
     <Card>
-    <div className="row d-none-lg">
-      <div className="col-12 col-lg-6">
-        
+      <div className="row d-none-lg">
+        <div className="col-12 col-lg-6">
           <ul>
             <li><i className="fal fa-badge-check" /> Number of percent IMG applicants </li>
             <li><i className="fal fa-badge-check" /> Minimum Step 1 &amp; Step 2 Score</li>
             <li><i className="fal fa-badge-check" /> City &amp; Address</li>
           </ul>
-        
-      </div>
-      <div className="col-12 col-lg-6">
-        
+        </div>
+        <div className="col-12 col-lg-6">
+
           <ul>
             <li><i className="fal fa-badge-check" /> Salary and number of sick days </li>
             <li><i className="fal fa-badge-check" /> Working hours</li>
             <li><i className="fal fa-badge-check" /> Number of positions filled every year</li>
           </ul>
-        
+
+        </div>
       </div>
-    </div>
 
     </Card>
 
-    <h2 className="text-center p-4">Our happy customers</h2>
+    <BasicHeading>Our happy customers</BasicHeading>
+    <TestimonialCarousel></TestimonialCarousel>
 
     <div className="row">
       <div className="col-12 offset-md-2 col-md-8">
-        <Card>
-
-          <div className="row">
-            <div className="col-4">
-              <Image
-                src="/components/templates/HomePage/customers/guy.jpg"
-                alt="Picture of the author"
-                width={500}
-                height={500}
-              />
-            </div>
-            <div className="col-8">
-              <h3>Lisa Pederson</h3>
-              <p>Apple pie muffin topping jelly dessert marshmallow fruitcake brownie. Pudding caramels biscuit donut sesame snaps </p>
-              <p>Graduated 1. Lekarska Faukta Universita Karlova , 2020</p>
-              <p>Czech Republic</p>
-            </div>
-          </div>
-        </Card>
+        
       </div>
     </div>
     <div className="row">
@@ -98,14 +80,14 @@ const HomePage: React.FC = () => (
               <h2>Money back guarantee</h2>
               <p>
                 If you dont like what you got we will refund your payment, not questions asked. Thats our policy
-          </p>
+            </p>
             </div>
           </div>
         </Card>
       </div>
     </div>
 
-    <h2 className="text-center p-4">Free giveaway</h2>
+    <BasicHeading>Free giveaway</BasicHeading>
 
     <div className="row">
       <div className="col-md-12 col-lg-8 offset-lg-2">
@@ -126,7 +108,7 @@ days since last free giveaway. Come back tomorrow</p>
       </div>
 
     </div>
-    <h2 className="text-center p-4">Download sample</h2>
+    <BasicHeading>Download sample</BasicHeading>
     <div className="row">
       <div className="col-md-12 col-lg-8 offset-lg-2">
         <Card className="d-flex">
@@ -142,6 +124,9 @@ days since last free giveaway. Come back tomorrow</p>
         </Card>
       </div>
     </div>
+
+    <BasicHeading>From our blog</BasicHeading>
+    <CoursesList></CoursesList>
   </>
 );
 
