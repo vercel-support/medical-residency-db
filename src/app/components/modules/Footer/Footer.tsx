@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
           <div className="col-lg-7 col-12">
             <h3>From our blog</h3>
             <ul className="pl-4">
-              {links.map(f => <li><a href={f.href}>{f.text}</a></li>)}
+              {links.map((f, index) => <li key={index}><a href={f.href}>{f.text}</a></li>)}
             </ul>
           </div>
         </div>

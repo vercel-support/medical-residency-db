@@ -22,7 +22,7 @@ const TestimonialCard: React.FC<Props> = (props: Props) => (
                     height={300}
                     alt={`${props.name}'s testemonial about ResidencyDatabase.online`} />
                 <div className="text-center pt-4">
-                    {[0, 1, 2, 3, 4].map(f => <i className={styles.stars + ' fa fa-star'} />)}
+                    {[0, 1, 2, 3, 4].map(f => <i key={f} className={styles.stars + ' fa fa-star'} />)}
                 </div>
             </div>
             <div className="col-12 col-md-8">

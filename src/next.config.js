@@ -8,4 +8,5 @@ module.exports = {
   images: {
     domains: ['loremflickr.com'],
   },
+  target: "serverless",
 };

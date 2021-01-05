@@ -35,7 +35,7 @@ const CoursesList: React.FC = () => {
 
     return (
         <div className="row">
-            {courses.map(f => <div className="col-12 col-lg-6 mb-4"><CourseCard name={f.name} id={f.id} price={f.price}></CourseCard></div>)}
+            {courses.map((f, index) => <div key={index} className="col-12 col-lg-6 mb-4"><CourseCard name={f.name} id={f.id} price={f.price}></CourseCard></div>)}
         </div>
     )
 };
