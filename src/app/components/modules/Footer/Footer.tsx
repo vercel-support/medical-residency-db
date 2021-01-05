@@ -1,4 +1,3 @@
-import Icon, { Icons } from '@element/Icon/Icon';
 import styles from './Footer.module.scss';
 
 const Footer: React.FC = () => {
