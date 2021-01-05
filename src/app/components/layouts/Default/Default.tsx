@@ -11,7 +11,7 @@ type Props = {
 const Default: React.FC<Props> = ({ children }) => (
   <div>
     <Header />
-    <div className="container">{children}</div>
+    <div>{children}</div>
     <Footer />
   </div>
 );

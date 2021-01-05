@@ -1,5 +1,7 @@
 import styles from './CourseCard.module.scss';
 import TestimonialCard from './../TestimonialCard/TestimonialCard';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 
 type Props = {
     name: string;
@@ -9,131 +11,12 @@ type Props = {
 
 const TestimonialCarousel: React.FC = () => {
 
-    let courses = [{
-        "name": "Nicholas Kessler",
-        "testimonialText": "heard about this on gypsy jazz radio, decided to give it a try.",
-        "rating": 3.9097391904377097,
-        "almaMater": "Shanxi Datong University School of Medicine",
-        "graduatedYear": 2020,
-        "location": "Cruickshanktown, South Carolina",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=288778754"
-    }, {
-        "name": "Kelli Farrell",
-        "testimonialText": "It only works when I'm Niger.",
-        "rating": 4.4466779867404505,
-        "almaMater": "Universidad Nacional José Faustino Sánchez Carrión Facultad de Medicina Humana",
-        "graduatedYear": 2021,
-        "location": "Lake Kacie, Rhode Island",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=2018903704"
-    }, {
-        "name": "Gilbert Walker",
-        "testimonialText": "I tried to hang it but got jelly bean all over it.",
-        "rating": 4.8535828303329565,
-        "almaMater": "Universidad de Alicante Facultad de Medicina",
-        "graduatedYear": 2018,
-        "location": "South Ashlynnfurt, Georgia",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=1214184363"
-    }, {
-        "name": "Louis Dooley",
-        "testimonialText": "The box this comes in is 5 kilometer by 5 inch and weights 13 kilogram!!!",
-        "rating": 4.364208971552648,
-        "almaMater": "University of Benin College of Medical Sciences",
-        "graduatedYear": 2020,
-        "location": "Sibylburgh, Tennessee",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=2056043591"
-    }, {
-        "name": "Brian Blanda",
-        "testimonialText": "I saw one of these in Vanuatu and I bought one.",
-        "rating": 4.8847071292738935,
-        "almaMater": "Andhra Medical College",
-        "graduatedYear": 2018,
-        "location": "Mosciskibury, California",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=1479047780"
-    }, {
-        "name": "Guy Cassin",
-        "testimonialText": "talk about interest!!",
-        "rating": 4.253806962982662,
-        "almaMater": "Bannu Medical College",
-        "graduatedYear": 2021,
-        "location": "Kundeburgh, North Dakota",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=509235835"
-    }, {
-        "name": "Tricia Harris",
-        "testimonialText": "The box this comes in is 3 inch by 6 centimeter and weights 15 ounce!",
-        "rating": 4.830120028150324,
-        "almaMater": "Mulungushi University School of Medicine and Health Sciences",
-        "graduatedYear": 2020,
-        "location": "DuBuqueburgh, Delaware",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=1863909564"
-    }, {
-        "name": "Jo Kutch",
-        "testimonialText": "I saw one of these in Cote d'Ivoire and I bought one.",
-        "rating": 3.773914756380913,
-        "almaMater": "Universiti Teknologi Mara Faculty of Medicine",
-        "graduatedYear": 2019,
-        "location": "Lake Imogene, Florida",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=411191951"
-    }, {
-        "name": "Shelly Lind",
-        "testimonialText": "I saw one of these in Macau and I bought one.",
-        "rating": 3.9488018676400194,
-        "almaMater": "Anhui University of Science and Technology College of Medicine",
-        "graduatedYear": 2018,
-        "location": "Margaretside, Nebraska",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=1691108719"
-    }, {
-        "name": "Maxine Mertz",
-        "testimonialText": "this product is tasty.",
-        "rating": 4.133377011694655,
-        "almaMater": "University of Birmingham College of Medical and Dental Sciences",
-        "graduatedYear": 2020,
-        "location": "North Cleveland, Minnesota",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=626734220"
-    }, {
-        "name": "Melissa Effertz",
-        "testimonialText": "My tiger loves to play with it.",
-        "rating": 3.9732936008243325,
-        "almaMater": "Dr. Vaishampayan Memorial Medical College",
-        "graduatedYear": 2021,
-        "location": "Handfort, Arizona",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=841214072"
-    }, {
-        "name": "Jaime Schulist",
-        "testimonialText": "My dog loves to play with it.",
-        "rating": 4.8630920869126415,
-        "almaMater": "Spinghar Institute of Higher Education, Nangarhar",
-        "graduatedYear": 2019,
-        "location": "South Emeraldton, Hawaii",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=1132314510"
-    }, {
-        "name": "Lionel Harber",
-        "testimonialText": "I tried to nab it but got biscuit all over it.",
-        "rating": 3.7999587893951494,
-        "almaMater": "Sylhet Women's Medical College and Hospital",
-        "graduatedYear": 2017,
-        "location": "Hirthechester, Alaska",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=1552982071"
-    }, {
-        "name": "Angela Zulauf",
-        "testimonialText": "This product works considerably well. It recklessly improves my basketball by a lot.",
-        "rating": 4.3400586165208646,
-        "almaMater": "HITEC Institute of Medical Sciences",
-        "graduatedYear": 2019,
-        "location": "Carterside, Virginia",
-        "pictureUrl": "https://loremflickr.com/320/240?lock=93276244"
-    }];
+    let courses = [{"name":"Randolph Walter","testimonialText":"I saw one of these in New Zealand and I bought one.","rating":4.151375873317651,"almaMater":"Maharishi Markandeshwar Medical College & Hospital, Solan","graduatedYear":2018,"location":"New Herminafurt, South Dakota","pictureUrl":"https://loremflickr.com/320/240?lock=1470472136"},{"name":"Gwen Harris","testimonialText":"This product works extremely well. It wetly improves my tennis by a lot.","rating":4.205450670423661,"almaMater":"Georgian National University SEU Faculty of Medicine","graduatedYear":2018,"location":"East Jerrellfort, South Dakota","pictureUrl":"https://loremflickr.com/320/240?lock=1770135853"},{"name":"Larry Lockman","testimonialText":"My demon loves to play with it.","rating":4.63699360081786,"almaMater":"Medizinische Hochschule Lübeck, Universität Lübeck","graduatedYear":2020,"location":"Robertsville, Ohio","pictureUrl":"https://loremflickr.com/320/240?lock=1317330100"},{"name":"Katie Leuschke","testimonialText":"i use it on Mondays when i'm in my fort.","rating":4.123783718852225,"almaMater":"Universidad Tecnológica de Pereira Facultad de Ciencias de la Salud","graduatedYear":2019,"location":"Balistreriton, Arkansas","pictureUrl":"https://loremflickr.com/320/240?lock=110036072"},{"name":"Alan Mayert","testimonialText":"My co-worker Mitchell has one of these. He says it looks dry.","rating":4.566737097486266,"almaMater":"Near East University Faculty of Medicine","graduatedYear":2017,"location":"Lake Marcusfort, Vermont","pictureUrl":"https://loremflickr.com/320/240?lock=1317276781"},{"name":"Kristina Ruecker","testimonialText":"It only works when I'm Samoa.","rating":4.708025850685326,"almaMater":"Stalino Medical Institute","graduatedYear":2021,"location":"Gutmannburgh, Kentucky","pictureUrl":"https://loremflickr.com/320/240?lock=2134057589"},{"name":"Clyde King","testimonialText":"My neighbor Alida has one of these. She works as a gambler and she says it looks spotless.","rating":4.504608088407949,"almaMater":"Universidad Veracruzana Facultad de Medicina Orizaba-Córdoba","graduatedYear":2020,"location":"Gussiestad, Mississippi","pictureUrl":"https://loremflickr.com/320/240?lock=370388508"},{"name":"Saul Robel","testimonialText":"this product is light-hearted.","rating":4.376167645154599,"almaMater":"P.K. Das Institute of Medical Sciences","graduatedYear":2017,"location":"South Retaport, North Dakota","pictureUrl":"https://loremflickr.com/320/240?lock=2057827918"},{"name":"Eddie Franecki","testimonialText":"The box this comes in is 5 yard by 6 centimeter and weights 12 kilogram.","rating":3.5739806911786927,"almaMater":"Universitas Islam Indonesia Fakultas Kedokteran","graduatedYear":2017,"location":"Brycenfurt, Utah","pictureUrl":"https://loremflickr.com/320/240?lock=1694389550"},{"name":"Rolando Kulas","testimonialText":"My neighbor Isabela has one of these. She works as a taxidermist and she says it looks monochromatic.","rating":4.869977115592908,"almaMater":"Universidade de Santo Amaro (UNISA) Faculdade de Medicina","graduatedYear":2017,"location":"Alfredview, Kansas","pictureUrl":"https://loremflickr.com/320/240?lock=1428690228"},{"name":"Jill Rodriguez","testimonialText":"talk about optimism!!!","rating":4.128052103858465,"almaMater":"Herat University Faculty of Medicine","graduatedYear":2020,"location":"Boganmouth, Alabama","pictureUrl":"https://loremflickr.com/320/240?lock=1788594926"},{"name":"Emily Goyette","testimonialText":"This product works outstandingly well. It grudgingly improves my baseball by a lot.","rating":3.9576844700880742,"almaMater":"Universidad Cooperativa de Colombia Facultad de Medicina, Villavicencio","graduatedYear":2017,"location":"Lake Fredy, Kansas","pictureUrl":"https://loremflickr.com/320/240?lock=578709050"},{"name":"Ross White","testimonialText":"I tried to annihilate it but got bonbon all over it.","rating":4.010435368637757,"almaMater":"Krasnoyarsk State Medical University named after Professor V. F. Voino-Yasenetsky","graduatedYear":2018,"location":"North Micah, Pennsylvania","pictureUrl":"https://loremflickr.com/320/240?lock=1082676683"},{"name":"Chris Bernier","testimonialText":"This product works considerably well. It mildly improves my basketball by a lot.","rating":4.200031277583927,"almaMater":"Trichy SRM Medical College Hospital and Research Centre","graduatedYear":2021,"location":"Ashlybury, Kansas","pictureUrl":"https://loremflickr.com/320/240?lock=2107859345"}];
 
     return (
-        <div className="row">
-
-            <div className="col-1">
-            <i className="fa fa-chevron-left fa-4x"></i>
-            </div>
-            {courses.map(f => <div className="col-10"><TestimonialCard  {...f}></TestimonialCard></div>)}
-            <div className="col-1">
-            <i className="fa fa-chevron-right fa-4x"></i>
-            </div>
-        </div>
+        <Carousel autoPlay={true}>
+            {courses.map(f => <div className="px-5 py-2 pb-4"><TestimonialCard  {...f}></TestimonialCard></div>)}
+        </Carousel>
     )
 };
 
