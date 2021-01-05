@@ -1,6 +1,5 @@
 [build]
   base = "src"
-  command = "yarn build"
-  functions = "out_functions"
-  publish   = "out_publish"
+  publish = "out"
+  command = "yarn build && yarn export"
   
