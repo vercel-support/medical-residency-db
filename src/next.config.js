@@ -6,6 +6,6 @@ module.exports = {
     includePaths: [path.join(__dirname, 'app/styles')],
   },
   images: {
-    domains: ['loremflickr.com'],
+    domains: ['loremflickr.com', 'dl.airtable.com'],
   },
 };

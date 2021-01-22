@@ -28,7 +28,7 @@ const TestimonialCard: React.FC<Props> = (props: Props) => (
             <div className="col-12 col-md-8">
                 <h3>{props.name}</h3>
                 <p>{props.testimonialText}</p>
-                <small className="text-muted">{props.almaMater}, graduated {props.graduatedYear}</small>
+                <small className="text-muted">{props.almaMater}, graduated {props.graduatedYear}</small> <br />
                 <small className="text-muted">{props.location}</small>
             </div>
         </div>

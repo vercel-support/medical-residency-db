@@ -1,0 +1,17 @@
+.leftArrow {
+    left:0;   
+    text-shadow: 0px 4px 0px #FFFFFF; 
+}
+
+.rightArrow {
+    right:0;
+    text-shadow: 0px 4px 0px #FFFFFF;
+}
+
+.leftArrow, .rightArrow {
+    cursor: pointer;
+    position: absolute;
+    top:35%;
+
+    z-index: 2;
+}

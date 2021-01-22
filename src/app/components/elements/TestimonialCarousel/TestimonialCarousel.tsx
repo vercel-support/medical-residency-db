@@ -1,4 +1,4 @@
-import styles from './CourseCard.module.scss';
+import styles from './TestimonialCarousel.module.scss';
 import TestimonialCard from './../TestimonialCard/TestimonialCard';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
@@ -11,10 +11,100 @@ type Props = {
 
 const TestimonialCarousel: React.FC = () => {
 
-    let courses = [{ "name": "Randolph Walter", "testimonialText": "I saw one of these in New Zealand and I bought one.", "rating": 4.151375873317651, "almaMater": "Maharishi Markandeshwar Medical College & Hospital, Solan", "graduatedYear": 2018, "location": "New Herminafurt, South Dakota", "pictureUrl": "https://loremflickr.com/320/240?lock=1470472136" }, { "name": "Gwen Harris", "testimonialText": "This product works extremely well. It wetly improves my tennis by a lot.", "rating": 4.205450670423661, "almaMater": "Georgian National University SEU Faculty of Medicine", "graduatedYear": 2018, "location": "East Jerrellfort, South Dakota", "pictureUrl": "https://loremflickr.com/320/240?lock=1770135853" }, { "name": "Larry Lockman", "testimonialText": "My demon loves to play with it.", "rating": 4.63699360081786, "almaMater": "Medizinische Hochschule Lübeck, Universität Lübeck", "graduatedYear": 2020, "location": "Robertsville, Ohio", "pictureUrl": "https://loremflickr.com/320/240?lock=1317330100" }, { "name": "Katie Leuschke", "testimonialText": "i use it on Mondays when i'm in my fort.", "rating": 4.123783718852225, "almaMater": "Universidad Tecnológica de Pereira Facultad de Ciencias de la Salud", "graduatedYear": 2019, "location": "Balistreriton, Arkansas", "pictureUrl": "https://loremflickr.com/320/240?lock=110036072" }, { "name": "Alan Mayert", "testimonialText": "My co-worker Mitchell has one of these. He says it looks dry.", "rating": 4.566737097486266, "almaMater": "Near East University Faculty of Medicine", "graduatedYear": 2017, "location": "Lake Marcusfort, Vermont", "pictureUrl": "https://loremflickr.com/320/240?lock=1317276781" }, { "name": "Kristina Ruecker", "testimonialText": "It only works when I'm Samoa.", "rating": 4.708025850685326, "almaMater": "Stalino Medical Institute", "graduatedYear": 2021, "location": "Gutmannburgh, Kentucky", "pictureUrl": "https://loremflickr.com/320/240?lock=2134057589" }, { "name": "Clyde King", "testimonialText": "My neighbor Alida has one of these. She works as a gambler and she says it looks spotless.", "rating": 4.504608088407949, "almaMater": "Universidad Veracruzana Facultad de Medicina Orizaba-Córdoba", "graduatedYear": 2020, "location": "Gussiestad, Mississippi", "pictureUrl": "https://loremflickr.com/320/240?lock=370388508" }, { "name": "Saul Robel", "testimonialText": "this product is light-hearted.", "rating": 4.376167645154599, "almaMater": "P.K. Das Institute of Medical Sciences", "graduatedYear": 2017, "location": "South Retaport, North Dakota", "pictureUrl": "https://loremflickr.com/320/240?lock=2057827918" }, { "name": "Eddie Franecki", "testimonialText": "The box this comes in is 5 yard by 6 centimeter and weights 12 kilogram.", "rating": 3.5739806911786927, "almaMater": "Universitas Islam Indonesia Fakultas Kedokteran", "graduatedYear": 2017, "location": "Brycenfurt, Utah", "pictureUrl": "https://loremflickr.com/320/240?lock=1694389550" }, { "name": "Rolando Kulas", "testimonialText": "My neighbor Isabela has one of these. She works as a taxidermist and she says it looks monochromatic.", "rating": 4.869977115592908, "almaMater": "Universidade de Santo Amaro (UNISA) Faculdade de Medicina", "graduatedYear": 2017, "location": "Alfredview, Kansas", "pictureUrl": "https://loremflickr.com/320/240?lock=1428690228" }, { "name": "Jill Rodriguez", "testimonialText": "talk about optimism!!!", "rating": 4.128052103858465, "almaMater": "Herat University Faculty of Medicine", "graduatedYear": 2020, "location": "Boganmouth, Alabama", "pictureUrl": "https://loremflickr.com/320/240?lock=1788594926" }, { "name": "Emily Goyette", "testimonialText": "This product works outstandingly well. It grudgingly improves my baseball by a lot.", "rating": 3.9576844700880742, "almaMater": "Universidad Cooperativa de Colombia Facultad de Medicina, Villavicencio", "graduatedYear": 2017, "location": "Lake Fredy, Kansas", "pictureUrl": "https://loremflickr.com/320/240?lock=578709050" }, { "name": "Ross White", "testimonialText": "I tried to annihilate it but got bonbon all over it.", "rating": 4.010435368637757, "almaMater": "Krasnoyarsk State Medical University named after Professor V. F. Voino-Yasenetsky", "graduatedYear": 2018, "location": "North Micah, Pennsylvania", "pictureUrl": "https://loremflickr.com/320/240?lock=1082676683" }, { "name": "Chris Bernier", "testimonialText": "This product works considerably well. It mildly improves my basketball by a lot.", "rating": 4.200031277583927, "almaMater": "Trichy SRM Medical College Hospital and Research Centre", "graduatedYear": 2021, "location": "Ashlybury, Kansas", "pictureUrl": "https://loremflickr.com/320/240?lock=2107859345" }];
-
+    let courses = [
+        {
+          "name": "Lisa Pederson",
+          "testimonialText": "Easy to use, have all information I needed to choose residency programs",
+          "rating": 4.5,
+          "almaMater": "Universidad Veracruzana Facultad de Medicina Orizaba-Córdoba,",
+          "graduatedYear": 2019,
+          "pictureUrl": "https://dl.airtable.com/.attachments/14289f78cb5910245b63b686f68cbcc3/bdecae00/image.jpeg",
+          "location": "Oslo, Norway"
+        },
+        {
+          "name": "Anika Mukherjee",
+          "testimonialText": "I used the IM spread sheet to filter out programs that require higher Step 1 scores, low IMG % and states I didn't want to live in.",
+          "rating": 5,
+          "almaMater": "A.C.S. Medical College and Hospital",
+          "graduatedYear": 2018,
+          "pictureUrl": "https://dl.airtable.com/.attachments/730bc7a4f783b038cb659f3747393bb7/78d02d4c/Unknown.jpeg",
+          "location": "India"
+        },
+        {
+          "name": "Monica Neff",
+          "testimonialText": "As a US-IMG I didn't want to spend much money or time researching residencies. I highly recommend this spreadsheets to help you pick most suitable programs out there.",
+          "rating": 5,
+          "almaMater": "First Faculty of Medicine, Charles University",
+          "graduatedYear": 2020,
+          "pictureUrl": "https://dl.airtable.com/.attachments/fff2648bda18e0255b9b13d07d9786fc/67f04b22/10db1d18-9bfc-4abf-b199-5373db8451c4.jpg",
+          "location": "San Francisco, USA"
+        },
+        {
+          "name": "Arjun Pandey",
+          "testimonialText": "I was applied to multiple specialities and this tables helped to focus on residency programs that are IMG friendly, have great working hours, located close to family I have in New Jersey.",
+          "rating": 4.5,
+          "almaMater": "Deccan College of Medical Sciences",
+          "graduatedYear": 2019,
+          "pictureUrl": "https://dl.airtable.com/.attachments/076aa40fdc75e4bdd4d39bb5025404ec/0e52a50e/images.jpeg",
+          "location": "India"
+        },
+        {
+          "name": "Aliya Kadir",
+          "testimonialText": "I decided to apply last min, so had only 2 days to research programs. Thanks to this product I was able to pick successfully residency programs and book over 20 interviews.",
+          "rating": 5,
+          "almaMater": "Medical School of Astana",
+          "graduatedYear": 2020,
+          "pictureUrl": "https://dl.airtable.com/.attachments/1a289a8cc503c5c13cdae5d55b6cfc7d/15527c20/MadinaEras.jpg",
+          "location": "Oskemen, Kazakhstan"
+        },
+        {
+          "name": "Ishwari Samir",
+          "testimonialText": "Thank you for organising all the information in the tables, that are easy to use and for such an affordable price.",
+          "rating": 5,
+          "almaMater": "Aarupadai Veedu Medical College",
+          "graduatedYear": 2019,
+          "pictureUrl": "https://dl.airtable.com/.attachments/1af85717e42ad0ee15652efc15f2344d/6c658766/images.jpeg",
+          "location": "India"
+        },
+        {
+          "name": "Xuan Baccay",
+          "testimonialText": "I used it to find clinical rotations in hospitals where I can apply next year and secure good LOR",
+          "rating": 5,
+          "almaMater": "Divine Word University School of Medicine (Liceo del Verbo Divino)",
+          "graduatedYear": 2020,
+          "pictureUrl": "https://dl.airtable.com/.attachments/07f8d580a956c885e216d177dbc5f7d8/4b469716/Unknown.jpeg",
+          "location": "Phillipins"
+        },
+        {
+          "name": "Juliane Thumulla",
+          "testimonialText": "Made my life much easier!!! Thanks.",
+          "rating": 4.5,
+          "almaMater": "European Medical School, Carl von Ossietzky Universität Oldenburg",
+          "graduatedYear": 2020,
+          "pictureUrl": "https://dl.airtable.com/.attachments/dc3d29a2473a07af07dd1aaca677b8e6/d210462e/image.jpeg",
+          "location": "Hamburg, Germany"
+        }
+      ];
+      
     return (
-        <Carousel autoPlay={true}>
+        <Carousel autoPlay={true}
+
+            renderArrowPrev={(onClickHandler, active, label) =>
+                active && (
+                    <div className={styles.leftArrow} onClick={onClickHandler}>
+                        <i className="fa fa-chevron-left text-primary fa-3x"  ></i>
+                    </div>
+                )
+            }
+
+            renderArrowNext={(onClickHandler, active, label) =>
+                active && (
+                    <div className={styles.rightArrow} onClick={onClickHandler}>
+                        <i className="fa fa-chevron-right text-primary fa-3x"  ></i>
+                    </div>
+                )
+            }
+        >
             {courses.map((f, index) => <div key={index} className="px-5 py-2 pb-4"><TestimonialCard  {...f}></TestimonialCard></div>)}
         </Carousel>
     )

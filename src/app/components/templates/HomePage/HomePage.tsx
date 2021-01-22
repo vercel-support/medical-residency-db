@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
       <div className="container">
 
 
-        <ScrollAnimation animateOnce={true} animateIn={animation}>
+        <ScrollAnimation animateIn={animation}>
           <div className="pt-5">
             <h2>
               ResidencyDatabase is set of Excel sheets you use when looking for medical residency. You will be able to quickly find out what is best for your profile.
@@ -50,8 +50,8 @@ const HomePage: React.FC = () => {
           </div>
         </ScrollAnimation>
 
-        <ScrollAnimation animateOnce={true} animateIn={animation}>
-          <BasicHeading>What's inside</BasicHeading>
+        <ScrollAnimation animateIn={animation}>
+          <BasicHeading>What's Inside</BasicHeading>
           <Card>
             <div className="row d-none-lg">
               <div className="col-12 col-lg-6">
@@ -75,8 +75,8 @@ const HomePage: React.FC = () => {
           </Card>
         </ScrollAnimation>
 
-        <ScrollAnimation animateOnce={true} animateIn={animation}>
-          <BasicHeading>Our happy customers</BasicHeading>
+        <ScrollAnimation animateIn={animation}>
+          <BasicHeading>Our Happy Customers</BasicHeading>
           <TestimonialCarousel></TestimonialCarousel>
 
           <div className="row">
@@ -114,10 +114,10 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </ScrollAnimation>
-        <ScrollAnimation animateOnce={true} animateIn={animation}>
+        <ScrollAnimation animateIn={animation}>
 
 
-          <BasicHeading>Free giveaway</BasicHeading>
+          <BasicHeading>Free Giveaway</BasicHeading>
 
           <div className="row">
             <div className="col-md-12 col-lg-8 offset-lg-2">
@@ -141,8 +141,8 @@ const HomePage: React.FC = () => {
 
         </ScrollAnimation>
 
-        <ScrollAnimation animateOnce={true} animateIn={animation}>
-          <BasicHeading>Give it a try</BasicHeading>
+        <ScrollAnimation animateIn={animation}>
+          <BasicHeading>Give It a Try</BasicHeading>
           <div className="row">
             <div className="col-md-12 col-lg-8 offset-lg-2">
               <Card className="d-flex align-items-center">
@@ -160,10 +160,10 @@ const HomePage: React.FC = () => {
           </div>
         </ScrollAnimation>
 
-        <ScrollAnimation animateOnce={true} animateIn={animation}>
+        <ScrollAnimation animateIn={animation}>
           <div className="mt-5">
 
-            <BasicHeading>Available sheets</BasicHeading>
+            <BasicHeading>Available Sheets</BasicHeading>
             {/* <BasicHeading>From our blog</BasicHeading> */}
             <CoursesList></CoursesList>
 
