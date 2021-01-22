@@ -11,14 +11,14 @@ type Props = {
 
 const TestimonialCarousel: React.FC = () => {
 
-    let courses = [
+    let courses =[
         {
           "name": "Lisa Pederson",
           "testimonialText": "Easy to use, have all information I needed to choose residency programs",
           "rating": 4.5,
           "almaMater": "Universidad Veracruzana Facultad de Medicina Orizaba-Córdoba,",
           "graduatedYear": 2019,
-          "pictureUrl": "https://dl.airtable.com/.attachments/14289f78cb5910245b63b686f68cbcc3/bdecae00/image.jpeg",
+          "pictureUrl": "https://dl.airtable.com/.attachments/a92101ac5f2422aeb50ab50ee2af570f/6009688d/Clipboard4.jpg",
           "location": "Oslo, Norway"
         },
         {
@@ -36,7 +36,7 @@ const TestimonialCarousel: React.FC = () => {
           "rating": 5,
           "almaMater": "First Faculty of Medicine, Charles University",
           "graduatedYear": 2020,
-          "pictureUrl": "https://dl.airtable.com/.attachments/fff2648bda18e0255b9b13d07d9786fc/67f04b22/10db1d18-9bfc-4abf-b199-5373db8451c4.jpg",
+          "pictureUrl": "https://dl.airtable.com/.attachments/bfcd44519586078353799dad636e7196/2995ae46/Clipboard.jpg",
           "location": "San Francisco, USA"
         },
         {
@@ -45,7 +45,7 @@ const TestimonialCarousel: React.FC = () => {
           "rating": 4.5,
           "almaMater": "Deccan College of Medical Sciences",
           "graduatedYear": 2019,
-          "pictureUrl": "https://dl.airtable.com/.attachments/076aa40fdc75e4bdd4d39bb5025404ec/0e52a50e/images.jpeg",
+          "pictureUrl": "https://dl.airtable.com/.attachments/653fbb31c4f46bf3f9ff9300d7dbe070/4696d567/Clipboard2.jpg",
           "location": "India"
         },
         {
@@ -54,7 +54,7 @@ const TestimonialCarousel: React.FC = () => {
           "rating": 5,
           "almaMater": "Medical School of Astana",
           "graduatedYear": 2020,
-          "pictureUrl": "https://dl.airtable.com/.attachments/1a289a8cc503c5c13cdae5d55b6cfc7d/15527c20/MadinaEras.jpg",
+          "pictureUrl": "https://dl.airtable.com/.attachments/5ebdfa1a165376ae8aebc482134cfe61/905ae874/Clipboard3.jpg",
           "location": "Oskemen, Kazakhstan"
         },
         {
@@ -81,11 +81,11 @@ const TestimonialCarousel: React.FC = () => {
           "rating": 4.5,
           "almaMater": "European Medical School, Carl von Ossietzky Universität Oldenburg",
           "graduatedYear": 2020,
-          "pictureUrl": "https://dl.airtable.com/.attachments/dc3d29a2473a07af07dd1aaca677b8e6/d210462e/image.jpeg",
+          "pictureUrl": "https://dl.airtable.com/.attachments/e0cb8baf3b146bc89732f08f1ef0abd3/34a3d8e5/Clipboard5.jpg",
           "location": "Hamburg, Germany"
         }
       ];
-      
+
     return (
         <Carousel autoPlay={true}
 
